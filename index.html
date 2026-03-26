@@ -1312,8 +1312,9 @@ const EMBEDDED_QUESTIONS = [
 //  BOOT
 // ═══════════════════════════════════════════════════
 (async function boot() {
+  allQuestions = EMBEDDED_QUESTIONS; // set immediately so pickLevel always works
   renderLoginChips();
-  await loadData();
+  await loadData(); // may override with sheet data if URL configured
   const saved = getSession();
   const users = getUsers();
   if (saved && users[saved]) {
