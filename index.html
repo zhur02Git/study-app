@@ -338,7 +338,6 @@ header{background:var(--ink);color:#fff;height:58px;display:flex;align-items:cen
           <div class="sel-sub">Multiplication · Tenses · Food Chains · Water Cycle</div>
         </div>
         <div class="sel-card" style="--tc:#d08800" id="p4-card" onclick="pickLevel('P4')">
-          <div class="lock-badge" id="p4-lock">🔒</div>
           <div class="sel-icon">🎓</div>
           <div class="sel-title">Primary 4</div>
           <div class="sel-sub">Decimals · Angles · Digestion · Electricity</div>
@@ -394,27 +393,6 @@ header{background:var(--ink);color:#fff;height:58px;display:flex;align-items:cen
   </div>
 </div>
 
-<!-- SCREEN 4: TOPICS -->
-<div class="screen" id="s-topics">
-  <div class="back-link" onclick="showScreen('s-diff')">← Difficulty</div>
-  <div style="display:flex;align-items:center;gap:9px;margin-bottom:5px;flex-wrap:wrap;">
-    <div class="slabel" style="margin:0">Choose Topics</div>
-    <span id="ctx-tag" style="font-size:10px;font-weight:800;padding:3px 9px;border-radius:6px;color:#fff;background:var(--tc,#888);text-transform:uppercase;"></span>
-  </div>
-  <div class="hero-sub" id="topics-sub" style="margin-bottom:16px;"></div>
-  <div class="topics-grid" id="topics-grid"></div>
-  <div class="slabel">Number of Questions</div>
-  <div class="count-row">
-    <button class="btn-cnt active" onclick="setCount(10,this)">10</button>
-    <button class="btn-cnt" onclick="setCount(20,this)">20</button>
-    <button class="btn-cnt" onclick="setCount(30,this)">30</button>
-  </div>
-  <div class="action-row">
-    <button class="btn-primary" onclick="startQuiz(false)">Start Quiz →</button>
-    <button class="btn-secondary" onclick="selectAll()">Select All</button>
-    <span style="font-size:12px;font-weight:600;color:var(--ink2);" id="sel-label">0 topics selected</span>
-  </div>
-</div>
 
 <!-- SCREEN 5: QUIZ -->
 <div class="screen" id="s-quiz">
@@ -458,7 +436,7 @@ header{background:var(--ink);color:#fff;height:58px;display:flex;align-items:cen
     <div class="results-actions">
       <button class="btn-primary" onclick="retryQuiz()">Retry</button>
       <button class="btn-green" onclick="goHomeEB()" id="res-practice-eb-btn" style="display:none">📚 Practice Errors</button>
-      <button class="btn-secondary" onclick="showScreen('s-topics')">← Topics</button>
+      <button class="btn-secondary" onclick="showScreen('s-diff')">← Change Difficulty</button>
       <button class="btn-secondary" onclick="showScreen('s-home')">🏠 Home</button>
     </div>
   </div>
@@ -468,28 +446,6 @@ header{background:var(--ink);color:#fff;height:58px;display:flex;align-items:cen
   </div>
 </div>
 
-<!-- SCREEN 7: PAYWALL -->
-<div class="screen" id="s-paywall">
-  <div class="back-link" onclick="showScreen('s-home')">← Home</div>
-  <div class="paywall-card">
-    <div class="paywall-emoji">🔓</div>
-    <div class="paywall-title">Unlock P4 Questions</div>
-    <div class="paywall-sub">P4 covers Decimals, Angles, Symmetry, Factors & Multiples, Digestion, Electricity, and more — all MOE-aligned.</div>
-    <div class="paywall-price">SGD $4.99<span style="font-size:16px;font-weight:600">/mo</span></div>
-    <div class="paywall-price-sub">Cancel anytime · Instant access</div>
-    <div class="paywall-features">
-      <div class="paywall-feature">Full P4 bank: 86 Maths · 77 English · 84 Science</div>
-      <div class="paywall-feature">Unlimited daily practice</div>
-      <div class="paywall-feature">Advanced topic breakdowns</div>
-      <div class="paywall-feature">Full error bank analysis</div>
-    </div>
-    <button class="btn-amber" onclick="goSubscribe()" style="width:100%;padding:14px;font-size:15px;">Upgrade Now →</button>
-    <div style="margin-top:10px">
-      <button class="btn-ghost" onclick="activatePremium()">I have a code / already subscribed</button>
-    </div>
-  </div>
-  <p style="font-size:11px;color:var(--ink2);text-align:center;font-weight:600;margin-top:8px;">P1–P3 practice always free · No credit card to start</p>
-</div>
 
 </div><!-- /app-shell -->
 <div class="confetti" id="confetti"></div>
@@ -699,19 +655,10 @@ function enterApp(name) {
   const i = Object.keys(users).indexOf(name) % AVATAR_COLORS.length;
   document.getElementById('header-avatar').style.background = AVATAR_COLORS[Math.max(0,i)];
   document.getElementById('header-avatar').textContent = name[0].toUpperCase();
-  // Update P4 lock
-  updateP4Lock();
   renderEB();
 }
 
-function updateP4Lock() {
-  const lockEl = document.getElementById('p4-lock');
-  const card = document.getElementById('p4-card');
-  if (isPremium(state.user)) {
-    if (lockEl) lockEl.style.display = 'none';
-    if (card) card.style.opacity = '1';
-  }
-}
+
 
 function logout() {
   clearSession();
@@ -731,10 +678,6 @@ function showScreen(id) {
 }
 
 function pickLevel(level) {
-  if (level === 'P4' && !isPremium(state.user)) {
-    showScreen('s-paywall');
-    return;
-  }
   state.level = level;
   var grid = document.getElementById('subject-grid');
   document.getElementById('subject-label').textContent = level + ' — Choose Subject';
@@ -774,85 +717,15 @@ function pickSubject(subj) {
 
 function pickDiff(diff) {
   state.diff = diff;
-  state.selectedTopics = [];
-  renderTopics();
-  showScreen('s-topics');
-}
-
-function renderTopics() {
+  // Auto-select ALL topics for the chosen level/subject/difficulty
   var topicMap = getTopicsForSelection();
-  var topics = Object.keys(topicMap).sort();
-  var meta = SUBJECT_META[state.subject] || {color:'#888'};
-  var grid = document.getElementById('topics-grid');
-  var diffLabel = {easy:'Foundation',medium:'Standard',hard:'Advanced',all:'All Levels'}[state.diff];
-  document.getElementById('ctx-tag').textContent = state.level + ' · ' + state.subject + ' · ' + diffLabel;
-  document.getElementById('ctx-tag').style.background = meta.color;
-  document.getElementById('ctx-tag').style.setProperty('--tc', meta.color);
-  document.getElementById('topics-sub').textContent = topics.length + ' topics available. Select the ones you want to practise.';
-  grid.innerHTML = '';
-  var TOPIC_ICONS = {
-    'Addition':'➕','Subtraction':'➖','Multiplication':'✖️','Division':'➗','Fractions':'½','Decimals':'💯',
-    'Whole Numbers':'🔢','Money':'💰','Time':'⏰','Length':'📏','Mass':'⚖️','Area':'📐','Perimeter':'📐',
-    'Multiplication Tables':'✖️','Bar Graphs':'📊','Shapes':'🔷','2D Shapes':'🔷','3D Shapes':'🎲',
-    'Picture Graphs':'📊','Ordinal Numbers':'🔢','Angles':'📐','Symmetry':'🪞','Factors and Multiples':'🔢',
-    'Tables and Graphs':'📊','Area and Perimeter':'📐',
-    'Grammar':'✏️','Phonics':'🔤','Spelling':'🔡','Vocabulary':'📖','Punctuation':'❗',
-    'Tenses':'⏳','Comprehension':'📝','Conjunctions':'🔗','Adjectives':'🎨','Pronouns':'👤',
-    'Simple Comprehension':'📝','Rhyming Words':'🎵','Capitalization':'🔠','Question Words':'❓',
-    'Subject-Verb Agreement':'✍️','Active and Passive':'🔄','Direct and Indirect Speech':'💬',
-    'Synthesis and Transformation':'🔄',
-    'Living and Non-Living Things':'🌿','Animals':'🐾','Plants':'🌱','Senses':'👁️',
-    'Materials':'🧱','Sky and Weather':'⛅','Human Body Parts':'🫀',
-    'Life Cycles':'🔄','Plant Reproduction':'🌸','Food Chains':'🍃','Water Cycle':'💧',
-    'Magnets':'🧲','Diversity of Living Things':'🌍','Materials and Properties':'🧪',
-    'Light and Shadow':'💡','Digestion':'🫀','Respiratory System':'🫁','Circulatory System':'❤️',
-    'Matter':'⚗️','Heat':'🔥','Electricity':'⚡','Environment':'🌍'
-  };
-  for (var t = 0; t < topics.length; t++) {
-    var topic = topics[t];
-    var icon = TOPIC_ICONS[topic] || '📌';
-    var count = topicMap[topic];
-    var card = document.createElement('div');
-    card.className = 'topic-card';
-    card.style.setProperty('--tc', meta.color);
-    card.setAttribute('onclick', "toggleTopic('" + topic.replace(/'/g, "\'") + "',this)");
-    card.innerHTML = '<div class="tc-count">' + count + 'q</div>' +
-      '<div class="tc-icon">' + icon + '</div>' +
-      '<div class="tc-name">' + topic + '</div>';
-    grid.appendChild(card);
-  }
-  updateSelLabel();
-}
-
-function toggleTopic(topic, el) {
-  const idx = state.selectedTopics.indexOf(topic);
-  if (idx >= 0) { state.selectedTopics.splice(idx,1); el.classList.remove('selected'); }
-  else { state.selectedTopics.push(topic); el.classList.add('selected'); }
-  updateSelLabel();
-}
-
-function updateSelLabel() {
-  document.getElementById('sel-label').textContent = `${state.selectedTopics.length} topic${state.selectedTopics.length!==1?'s':''} selected`;
-  document.querySelector('#s-topics .btn-primary').disabled = state.selectedTopics.length === 0;
-}
-
-function selectAll() {
-  const cards = document.querySelectorAll('#topics-grid .topic-card');
-  const topicMap = getTopicsForSelection();
   state.selectedTopics = Object.keys(topicMap);
-  cards.forEach(c => c.classList.add('selected'));
-  updateSelLabel();
+  startQuiz(false);
 }
 
-function setCount(n, btn) {
-  state.questionCount = n;
-  document.querySelectorAll('.btn-cnt').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-}
 
-// ═══════════════════════════════════════════════════
-//  QUIZ
-// ═══════════════════════════════════════════════════
+
+
 function startQuiz(ebMode) {
   state.isErrorBankMode = ebMode;
   if (ebMode) {
