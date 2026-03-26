@@ -500,7 +500,7 @@ header{background:var(--ink);color:#fff;height:58px;display:flex;align-items:cen
 const CONFIG = {
   // Publish your Google Sheet: File → Share → Publish to web → CSV
   // Paste the URL here. Leave empty to use embedded sample questions.
-  sheetCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vThfIBnRDecZLdPzi0yPQU4R74XyvXWt7_WGPaKtNK0oP_Y9BKasDv_MC_YWehjP0sGfp5wtJeOocaF/pubhtml',
+  sheetCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vThfIBnRDecZLdPzi0yPQU4R74XyvXWt7_WGPaKtNK0oP_Y9BKasDv_MC_YWehjP0sGfp5wtJeOocaF/pub?output=csv',
   stripeUrl: 'https://buy.stripe.com/your-link-here', // replace with your Stripe link
   premiumCode: 'SGQUIZ2024' // simple unlock code
 };
@@ -736,20 +736,34 @@ function pickLevel(level) {
     return;
   }
   state.level = level;
-  // Build subject grid
-  const subjects = [...new Set(allQuestions.filter(q => q.level === level).map(q => q.subject))].sort();
-  const grid = document.getElementById('subject-grid');
-  document.getElementById('subject-label').textContent = `${level} — Choose Subject`;
+  var grid = document.getElementById('subject-grid');
+  document.getElementById('subject-label').textContent = level + ' — Choose Subject';
   grid.innerHTML = '';
-  subjects.forEach(subj => {
-    const meta = SUBJECT_META[subj] || {icon:'📚', color:'#888', cls:''};
-    const count = allQuestions.filter(q => q.level === level && q.subject === subj).length;
-    grid.innerHTML += `<div class="sel-card ${meta.cls}" style="--tc:${meta.color}" onclick="pickSubject('${subj}')">
-      <div class="sel-icon">${meta.icon}</div>
-      <div class="sel-title">${subj}</div>
-      <div class="sel-sub">${count} questions</div>
-    </div>`;
-  });
+  var seen = {};
+  for (var i = 0; i < allQuestions.length; i++) {
+    var q = allQuestions[i];
+    if (q.level === level) {
+      seen[q.subject] = (seen[q.subject] || 0) + 1;
+    }
+  }
+  var subjects = Object.keys(seen).sort();
+  if (subjects.length === 0) {
+    grid.innerHTML = '<p style="color:#c42b2b;font-weight:700;padding:16px">No questions found for ' + level + ' (loaded: ' + allQuestions.length + ')</p>';
+    showScreen('s-subject');
+    return;
+  }
+  for (var j = 0; j < subjects.length; j++) {
+    var subj = subjects[j];
+    var meta = SUBJECT_META[subj] || {icon:'📚', color:'#888', cls:''};
+    var div = document.createElement('div');
+    div.className = 'sel-card ' + (meta.cls || '');
+    div.style.setProperty('--tc', meta.color);
+    div.setAttribute('onclick', "pickSubject('" + subj + "')");
+    div.innerHTML = '<div class="sel-icon">' + meta.icon + '</div>' +
+      '<div class="sel-title">' + subj + '</div>' +
+      '<div class="sel-sub">' + seen[subj] + ' questions</div>';
+    grid.appendChild(div);
+  }
   showScreen('s-subject');
 }
 
@@ -766,17 +780,17 @@ function pickDiff(diff) {
 }
 
 function renderTopics() {
-  const topicMap = getTopicsForSelection();
-  const topics = Object.keys(topicMap).sort();
-  const meta = SUBJECT_META[state.subject] || {color:'#888'};
-  const grid = document.getElementById('topics-grid');
-  const diffLabel = {easy:'Foundation',medium:'Standard',hard:'Advanced',all:'All Levels'}[state.diff];
-  document.getElementById('ctx-tag').textContent = `${state.level} · ${state.subject} · ${diffLabel}`;
+  var topicMap = getTopicsForSelection();
+  var topics = Object.keys(topicMap).sort();
+  var meta = SUBJECT_META[state.subject] || {color:'#888'};
+  var grid = document.getElementById('topics-grid');
+  var diffLabel = {easy:'Foundation',medium:'Standard',hard:'Advanced',all:'All Levels'}[state.diff];
+  document.getElementById('ctx-tag').textContent = state.level + ' · ' + state.subject + ' · ' + diffLabel;
   document.getElementById('ctx-tag').style.background = meta.color;
-  document.getElementById('ctx-tag').style['--tc'] = meta.color;
-  document.getElementById('topics-sub').textContent = `${topics.length} topics available. Select the ones you want to practise.`;
+  document.getElementById('ctx-tag').style.setProperty('--tc', meta.color);
+  document.getElementById('topics-sub').textContent = topics.length + ' topics available. Select the ones you want to practise.';
   grid.innerHTML = '';
-  const TOPIC_ICONS = {
+  var TOPIC_ICONS = {
     'Addition':'➕','Subtraction':'➖','Multiplication':'✖️','Division':'➗','Fractions':'½','Decimals':'💯',
     'Whole Numbers':'🔢','Money':'💰','Time':'⏰','Length':'📏','Mass':'⚖️','Area':'📐','Perimeter':'📐',
     'Multiplication Tables':'✖️','Bar Graphs':'📊','Shapes':'🔷','2D Shapes':'🔷','3D Shapes':'🎲',
@@ -786,23 +800,27 @@ function renderTopics() {
     'Tenses':'⏳','Comprehension':'📝','Conjunctions':'🔗','Adjectives':'🎨','Pronouns':'👤',
     'Simple Comprehension':'📝','Rhyming Words':'🎵','Capitalization':'🔠','Question Words':'❓',
     'Subject-Verb Agreement':'✍️','Active and Passive':'🔄','Direct and Indirect Speech':'💬',
-    'Synthesis and Transformation':'🔄','Ordinal Numbers':'🔢',
+    'Synthesis and Transformation':'🔄',
     'Living and Non-Living Things':'🌿','Animals':'🐾','Plants':'🌱','Senses':'👁️',
     'Materials':'🧱','Sky and Weather':'⛅','Human Body Parts':'🫀',
     'Life Cycles':'🔄','Plant Reproduction':'🌸','Food Chains':'🍃','Water Cycle':'💧',
     'Magnets':'🧲','Diversity of Living Things':'🌍','Materials and Properties':'🧪',
     'Light and Shadow':'💡','Digestion':'🫀','Respiratory System':'🫁','Circulatory System':'❤️',
-    'Matter':'⚗️','Heat':'🔥','Electricity':'⚡','Environment':'🌍',
+    'Matter':'⚗️','Heat':'🔥','Electricity':'⚡','Environment':'🌍'
   };
-  topics.forEach(topic => {
-    const icon = TOPIC_ICONS[topic] || '📌';
-    const count = topicMap[topic];
-    grid.innerHTML += `<div class="topic-card" style="--tc:${meta.color}" onclick="toggleTopic('${topic}',this)">
-      <div class="tc-count">${count}q</div>
-      <div class="tc-icon">${icon}</div>
-      <div class="tc-name">${topic}</div>
-    </div>`;
-  });
+  for (var t = 0; t < topics.length; t++) {
+    var topic = topics[t];
+    var icon = TOPIC_ICONS[topic] || '📌';
+    var count = topicMap[topic];
+    var card = document.createElement('div');
+    card.className = 'topic-card';
+    card.style.setProperty('--tc', meta.color);
+    card.setAttribute('onclick', "toggleTopic('" + topic.replace(/'/g, "\'") + "',this)");
+    card.innerHTML = '<div class="tc-count">' + count + 'q</div>' +
+      '<div class="tc-icon">' + icon + '</div>' +
+      '<div class="tc-name">' + topic + '</div>';
+    grid.appendChild(card);
+  }
   updateSelLabel();
 }
 
