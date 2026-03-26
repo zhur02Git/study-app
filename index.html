@@ -417,36 +417,7 @@ header{background:var(--ink);color:#fff;height:58px;display:flex;align-items:cen
   <div class="sel-grid col3" id="subject-grid"></div>
 </div>
 
-<!-- SCREEN 3: DIFFICULTY -->
-<div class="screen" id="s-diff">
-  <div class="back-link" onclick="showScreen('s-subject')">← Subject</div>
-  <div class="slabel">Difficulty</div>
-  <div class="sel-grid col3">
-    <div class="sel-card" style="--tc:#0e5c38" onclick="pickDiff('easy')">
-      <div class="sel-badge" style="background:#0e5c38">G1</div>
-      <div class="sel-icon">🌱</div>
-      <div class="sel-title">Foundation</div>
-      <div class="sel-sub">Core concepts, direct recall</div>
-    </div>
-    <div class="sel-card" style="--tc:#7a5500" onclick="pickDiff('medium')">
-      <div class="sel-badge" style="background:#7a5500">G2</div>
-      <div class="sel-icon">📘</div>
-      <div class="sel-title">Standard</div>
-      <div class="sel-sub">Application, moderate challenge</div>
-    </div>
-    <div class="sel-card" style="--tc:#7a0f0f" onclick="pickDiff('hard')">
-      <div class="sel-badge" style="background:#7a0f0f">G3</div>
-      <div class="sel-icon">🔥</div>
-      <div class="sel-title">Advanced</div>
-      <div class="sel-sub">Complex problems, exam standard</div>
-    </div>
-    <div class="sel-card" style="--tc:#6a5c4f;grid-column:1/-1" onclick="pickDiff('all')">
-      <div class="sel-icon">🎲</div>
-      <div class="sel-title">Mixed — All Difficulties</div>
-      <div class="sel-sub">Random mix of easy, medium and hard questions</div>
-    </div>
-  </div>
-</div>
+
 
 
 <!-- SCREEN 5: QUIZ -->
@@ -491,7 +462,7 @@ header{background:var(--ink);color:#fff;height:58px;display:flex;align-items:cen
     <div class="results-actions">
       <button class="btn-primary" onclick="retryQuiz()">Retry</button>
       <button class="btn-green" onclick="goHomeEB()" id="res-practice-eb-btn" style="display:none">📚 Practice Errors</button>
-      <button class="btn-secondary" onclick="showScreen('s-diff')">← Change Difficulty</button>
+      <button class="btn-secondary" onclick="showScreen('s-subject')">← New Quiz</button>
       <button class="btn-secondary" onclick="showScreen('s-home')">🏠 Home</button>
     </div>
   </div>
@@ -535,12 +506,13 @@ let state = {
   subject: null,
   diff: null,
   selectedTopics: [],
-  questionCount: 10,
+  questionCount: 15,
   quizQuestions: [],
   currentIndex: 0,
   score: 0,
   answers: [],
-  isErrorBankMode: false
+  isErrorBankMode: false,
+  ebFilter: 'all'
 };
 
 // ═══════════════════════════════════════════════════
@@ -591,10 +563,38 @@ function parseCSVRow(line) {
 // ═══════════════════════════════════════════════════
 //  DATA LOADING
 // ═══════════════════════════════════════════════════
+
+function getPubHtmlUrl() {
+  if (!CONFIG.sheetCsvUrl) return null;
+  return CONFIG.sheetCsvUrl.replace('pub?output=csv', 'pubhtml').replace(/&output=csv.*/, '');
+}
+
+function parseHtmlTable(html) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  const rows = Array.from(doc.querySelectorAll('table tr'));
+  if (rows.length < 2) return [];
+  const headers = Array.from(rows[0].querySelectorAll('td,th')).map(c => c.textContent.trim());
+  const result = [];
+  for (let i = 1; i < rows.length; i++) {
+    const cells = Array.from(rows[i].querySelectorAll('td,th')).map(c => c.textContent.trim());
+    if (cells.every(c => !c)) continue;
+    const obj = {};
+    headers.forEach((h, idx) => { if (h) obj[h] = cells[idx] || ''; });
+    result.push(obj);
+  }
+  return result;
+}
+
+async function tryFetch(url) {
+  const res = await fetch(url, { signal: AbortSignal.timeout(7000) });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return await res.text();
+}
+
 async function loadData() {
   const statusEl = document.getElementById('data-status');
 
-  // ── 1. Use embedded questions first (always works, no network needed) ──
   if (EMBEDDED_QUESTIONS.length > 0) {
     allQuestions = EMBEDDED_QUESTIONS;
     statusEl.innerHTML = '';
@@ -602,33 +602,85 @@ async function loadData() {
     return;
   }
 
-  // ── 2. If no embedded questions, try fetching from Google Sheet ──
-  if (CONFIG.sheetCsvUrl) {
-    statusEl.innerHTML = '<div class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading questions…</div></div>';
-    const proxies = [
-      CONFIG.sheetCsvUrl,
-      'https://corsproxy.io/?' + encodeURIComponent(CONFIG.sheetCsvUrl),
-      'https://api.allorigins.win/raw?url=' + encodeURIComponent(CONFIG.sheetCsvUrl)
-    ];
-    for (const url of proxies) {
-      try {
-        const res = await fetch(url);
-        if (!res.ok) continue;
-        const text = await res.text();
-        const parsed = parseCSV(text);
-        if (parsed.length === 0) continue;
+  if (!CONFIG.sheetCsvUrl) {
+    statusEl.innerHTML = '<div class="setup-banner">📋 No question bank connected yet. Paste your Google Sheet CSV URL into <code>CONFIG.sheetCsvUrl</code>.</div>';
+    return;
+  }
+
+  statusEl.innerHTML = '<div class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading questions…</div></div>';
+
+  const csvUrl  = CONFIG.sheetCsvUrl;
+  const htmlUrl = getPubHtmlUrl();
+  const enc     = encodeURIComponent(csvUrl);
+  const encHtml = encodeURIComponent(htmlUrl);
+
+  // Strategy A – CSV via proxies
+  const csvStrategies = [
+    { label: 'direct CSV',     url: csvUrl },
+    { label: 'corsproxy CSV',  url: 'https://corsproxy.io/?' + enc },
+    { label: 'allorigins CSV', url: 'https://api.allorigins.win/raw?url=' + enc },
+    { label: 'codetabs CSV',   url: 'https://api.codetabs.com/v1/proxy?quest=' + enc },
+  ];
+  for (const s of csvStrategies) {
+    try {
+      console.log('⏳ Trying', s.label);
+      const text   = await tryFetch(s.url);
+      const parsed = parseCSV(text);
+      if (parsed.length > 0 && parsed[0].question) {
         allQuestions = parsed;
         statusEl.innerHTML = '';
-        console.log('✅ Loaded', allQuestions.length, 'questions from sheet.');
+        console.log('✅ Loaded', allQuestions.length, 'questions via', s.label);
         return;
-      } catch(e) { console.warn('Fetch failed:', e.message); }
-    }
-    allQuestions = [];
-    statusEl.innerHTML = '<div class="setup-banner">⚠️ Could not load questions from Google Sheet. Make sure it is published as CSV. <a href="#" onclick="showSetupHelp()" style="color:var(--accent2)">How to set up →</a></div>';
-  } else {
-    allQuestions = [];
-    statusEl.innerHTML = '<div class="setup-banner">📋 No question bank connected yet. Open this file in a text editor and paste your Google Sheet CSV URL in <code>CONFIG.sheetCsvUrl</code>. <a href="#" onclick="showSetupHelp()" style="color:var(--accent2)">More details →</a></div>';
+      }
+    } catch(e) { console.warn(s.label, 'failed:', e.message); }
   }
+
+  // Strategy B – pubhtml page parsed as HTML table
+  if (htmlUrl) {
+    const htmlStrategies = [
+      { label: 'direct pubhtml',     url: htmlUrl },
+      { label: 'corsproxy pubhtml',  url: 'https://corsproxy.io/?' + encHtml },
+      { label: 'allorigins pubhtml', url: 'https://api.allorigins.win/raw?url=' + encHtml },
+    ];
+    for (const s of htmlStrategies) {
+      try {
+        console.log('⏳ Trying', s.label);
+        const text   = await tryFetch(s.url);
+        const parsed = parseHtmlTable(text);
+        if (parsed.length > 0 && parsed[0].question) {
+          allQuestions = parsed;
+          statusEl.innerHTML = '';
+          console.log('✅ Loaded', allQuestions.length, 'questions via', s.label);
+          return;
+        }
+      } catch(e) { console.warn(s.label, 'failed:', e.message); }
+    }
+  }
+
+  // Strategy C – allorigins JSON wrapper
+  try {
+    console.log('⏳ Trying allorigins JSON wrapper');
+    const res  = await fetch('https://api.allorigins.win/get?url=' + enc, { signal: AbortSignal.timeout(7000) });
+    const json = await res.json();
+    if (json && json.contents) {
+      const parsed = parseCSV(json.contents);
+      if (parsed.length > 0 && parsed[0].question) {
+        allQuestions = parsed;
+        statusEl.innerHTML = '';
+        console.log('✅ Loaded', allQuestions.length, 'questions via allorigins JSON');
+        return;
+      }
+    }
+  } catch(e) { console.warn('allorigins JSON failed:', e.message); }
+
+  allQuestions = [];
+  statusEl.innerHTML = `<div class="setup-banner">
+    ⚠️ Could not load questions from Google Sheet (network or CORS error).<br>
+    Make sure the sheet is published: <strong>File → Share → Publish to web → CSV</strong>.<br>
+    <a href="${htmlUrl || '#'}" target="_blank" rel="noopener" style="color:var(--accent2)">Open sheet ↗</a>
+    &nbsp;·&nbsp;
+    <a href="#" onclick="loadData()" style="color:var(--accent2)">Retry</a>
+  </div>`;
 }
 
 function getTopicsForSelection() {
@@ -782,7 +834,10 @@ function pickLevel(level) {
 
 function pickSubject(subj) {
   state.subject = subj;
-  showScreen('s-diff');
+  state.diff = 'all';
+  var topicMap = getTopicsForSelection();
+  state.selectedTopics = Object.keys(topicMap);
+  startQuiz(false);
 }
 
 function pickDiff(diff) {
@@ -800,18 +855,28 @@ function startQuiz(ebMode) {
   state.isErrorBankMode = ebMode;
   if (ebMode) {
     const eb = getEB(state.user);
-    const keys = Object.keys(eb).filter(k => !eb[k].mastered);
-    if (keys.length === 0) { alert('No errors to practise! Keep doing quizzes to build your Error Bank.'); return; }
+    const filter = state.ebFilter || 'all';
+    let keys = Object.keys(eb).filter(k => !eb[k].mastered);
+    if (filter === 'uncorrected') {
+      keys = keys.filter(k => eb[k].ebAttempted && !eb[k].mastered);
+      if (keys.length === 0) { alert('No uncorrected errors yet! Complete an Error Bank practice first, then come back to drill the ones you still got wrong.'); return; }
+    } else {
+      if (keys.length === 0) { alert('No errors to practise! Keep doing quizzes to build your Error Bank.'); return; }
+    }
     state.quizQuestions = keys.map(k => {
       const item = eb[k];
-      // Reconstruct question from allQuestions
       const found = allQuestions.find(q =>
         q.question === item.question && q.subject === item.subject
       );
-      return found || null;
+      return found ? { ...found, _ebKey: k } : null;
     }).filter(Boolean);
     shuffle(state.quizQuestions);
-    state.quizQuestions = state.quizQuestions.slice(0, state.questionCount || 10);
+    state.quizQuestions = state.quizQuestions.slice(0, state.questionCount || 15);
+    const ebNow = getEB(state.user);
+    state.quizQuestions.forEach(q => {
+      if (q._ebKey && ebNow[q._ebKey]) ebNow[q._ebKey].ebAttempted = true;
+    });
+    saveEB(state.user, ebNow);
   } else {
     if (state.selectedTopics.length === 0) { alert('Please select at least one topic.'); return; }
     state.quizQuestions = getQuestionsForQuiz();
@@ -845,9 +910,13 @@ function renderQuestion() {
   document.getElementById('feedback').innerHTML = '';
   document.getElementById('btn-next').className = 'btn-next';
 
-  // Build options grid
-  const opts = [q.option_a, q.option_b, q.option_c, q.option_d];
-  const correctIdx = ['A','B','C','D'].indexOf(q.correct_answer.trim().toUpperCase());
+  // Build options grid — shuffle so correct answer lands in a random slot
+  const origOpts = [q.option_a, q.option_b, q.option_c, q.option_d];
+  const origCorrectIdx = ['A','B','C','D'].indexOf(q.correct_answer.trim().toUpperCase());
+  const correctText = origOpts[origCorrectIdx];
+  const shuffleIdx = [0,1,2,3]; shuffle(shuffleIdx);
+  const opts = shuffleIdx.map(i => origOpts[i]);
+  const correctIdx = opts.indexOf(correctText);
   const body = document.getElementById('q-body');
   body.innerHTML = '';
   const grid = document.createElement('div');
@@ -998,6 +1067,7 @@ function renderEB() {
   const keys = Object.keys(eb);
   const unresolved = keys.filter(k => !eb[k].mastered);
   const mastered = keys.filter(k => eb[k].mastered);
+  const uncorrected = unresolved.filter(k => eb[k].ebAttempted && !eb[k].mastered);
   document.getElementById('eb-chip').textContent = unresolved.length;
 
   const body = document.getElementById('eb-sidebar-body');
@@ -1012,8 +1082,8 @@ function renderEB() {
 
   const stats = `<div class="eb-mini-stats">
     <div class="eb-mini-stat"><div class="eb-mini-stat-num" style="color:var(--red)">${unresolved.length}</div><div class="eb-mini-stat-lbl">To review</div></div>
+    <div class="eb-mini-stat"><div class="eb-mini-stat-num" style="color:var(--amber)">${uncorrected.length}</div><div class="eb-mini-stat-lbl">Uncorrected</div></div>
     <div class="eb-mini-stat"><div class="eb-mini-stat-num" style="color:var(--green)">${mastered.length}</div><div class="eb-mini-stat-lbl">Mastered</div></div>
-    <div class="eb-mini-stat"><div class="eb-mini-stat-num">${keys.length}</div><div class="eb-mini-stat-lbl">Total</div></div>
   </div>`;
 
   let items = '<div class="eb-mini-list">';
@@ -1032,7 +1102,10 @@ function renderEB() {
 
   const actions = `<div class="eb-mini-actions">
     <button class="btn-practice-eb" onclick="practiceEB()" ${unresolved.length===0?'disabled':''}>
-      📚 Practice ${unresolved.length} Error${unresolved.length!==1?'s':''}
+      📚 Practice All Errors (${unresolved.length})
+    </button>
+    <button class="btn-practice-eb" style="background:var(--amber)" onclick="practiceEBUncorrected()" ${uncorrected.length===0?'disabled':''}>
+      🎯 Practice Uncorrected (${uncorrected.length})
     </button>
     <button class="btn-clear-eb" onclick="clearEB()">Clear All</button>
   </div>`;
@@ -1054,7 +1127,14 @@ function clearEB() {
 }
 
 function practiceEB() {
-  state.questionCount = 10;
+  state.questionCount = 15;
+  state.ebFilter = 'all';
+  startQuiz(true);
+}
+
+function practiceEBUncorrected() {
+  state.questionCount = 15;
+  state.ebFilter = 'uncorrected';
   startQuiz(true);
 }
 
