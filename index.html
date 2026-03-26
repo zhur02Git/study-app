@@ -285,6 +285,25 @@ header{background:var(--ink);color:#fff;height:58px;display:flex;align-items:cen
 .setup-banner{background:rgba(20,96,176,.07);border:1.5px solid rgba(20,96,176,.25);border-radius:12px;padding:14px 16px;margin-bottom:20px;font-size:12.5px;font-weight:600;color:var(--accent2);line-height:1.7;}
 .setup-banner strong{color:var(--ink);}
 .setup-banner code{background:rgba(20,96,176,.1);padding:1px 6px;border-radius:4px;font-family:monospace;font-size:11px;}
+
+/* WELCOME COVER */
+.welcome-wrap{min-height:calc(100vh - 58px);display:flex;align-items:center;justify-content:center;
+  padding:20px;background:linear-gradient(160deg,#fff5fb 0%,#f3f0ea 60%,#fce8f3 100%);}
+.welcome-card{background:#fffdf8;border:2px solid #f0d8e8;border-radius:28px;
+  padding:44px 40px 36px;width:100%;max-width:400px;
+  box-shadow:0 12px 48px rgba(201,75,100,.13);text-align:center;}
+@media(max-width:480px){.welcome-card{padding:32px 22px 28px;}}
+.welcome-stars{font-size:13px;color:#e8a0c0;letter-spacing:10px;margin-bottom:10px;opacity:.7;}
+.rabbit-wrap{margin:0 auto 18px;width:160px;}
+.rabbit-svg{width:100%;height:auto;filter:drop-shadow(0 6px 18px rgba(201,75,120,.15));}
+.welcome-greeting{font-size:14px;font-weight:700;color:#b07090;letter-spacing:.5px;margin-bottom:4px;text-transform:uppercase;}
+.welcome-name{font-family:'DM Serif Display',serif;font-size:34px;color:#17120e;margin-bottom:12px;line-height:1.15;}
+.welcome-msg{font-size:13.5px;color:#6a5c4f;font-weight:600;line-height:1.75;margin-bottom:28px;}
+.welcome-btn{background:linear-gradient(135deg,#c94b0a 0%,#e05a18 100%);color:#fff;border:none;
+  border-radius:14px;padding:15px 36px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;
+  cursor:pointer;transition:all .2s;box-shadow:0 5px 18px rgba(201,75,10,.32);width:100%;margin-bottom:18px;}
+.welcome-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,75,10,.4);}
+.welcome-footer{font-size:11px;color:#b0a090;font-weight:700;letter-spacing:.6px;}
 </style>
 </head>
 <body>
@@ -298,22 +317,58 @@ header{background:var(--ink);color:#fff;height:58px;display:flex;align-items:cen
   <div id="header-moe" style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.8px;">MOE P3–P4</div>
 </header>
 
-<!-- LOGIN SCREEN -->
+<!-- WELCOME COVER -->
 <div id="s-login">
-  <div class="login-wrap">
-    <div class="login-card">
-      <div class="login-logo">SG <em>Study</em> Quiz</div>
-      <div class="login-subtitle">MOE-aligned P3–P4 practice<br>Who is studying today?</div>
-      <div id="existing-chips"></div>
-      <div id="new-user-form">
-        <div class="login-field">
-          <label>Your name</label>
-          <input class="login-input" id="login-name" type="text" placeholder="e.g. Mei Ling" maxlength="24">
-        </div>
-        <div class="login-err" id="login-err"></div>
-        <button class="login-btn" onclick="doLogin()">Start Practising →</button>
+  <div class="welcome-wrap">
+    <div class="welcome-card">
+      <div class="welcome-stars">✦ &nbsp;✦ &nbsp;✦</div>
+      <div class="rabbit-wrap">
+        <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg" class="rabbit-svg">
+          <ellipse cx="100" cy="210" rx="42" ry="8" fill="#e0d4c8" opacity="0.5"/>
+          <ellipse cx="72" cy="62" rx="16" ry="38" fill="#f9f0f5" transform="rotate(-10 72 62)"/>
+          <ellipse cx="72" cy="62" rx="9" ry="28" fill="#f5c6d8" transform="rotate(-10 72 62)"/>
+          <ellipse cx="128" cy="62" rx="16" ry="38" fill="#f9f0f5" transform="rotate(10 128 62)"/>
+          <ellipse cx="128" cy="62" rx="9" ry="28" fill="#f5c6d8" transform="rotate(10 128 62)"/>
+          <ellipse cx="100" cy="168" rx="46" ry="42" fill="#f9f0f5"/>
+          <circle cx="100" cy="118" r="38" fill="#f9f0f5"/>
+          <ellipse cx="79" cy="125" rx="11" ry="7" fill="#f5c6d8" opacity="0.7"/>
+          <ellipse cx="121" cy="125" rx="11" ry="7" fill="#f5c6d8" opacity="0.7"/>
+          <circle cx="87" cy="113" r="7" fill="#fff"/>
+          <circle cx="88" cy="113" r="4.5" fill="#4a3040"/>
+          <circle cx="90" cy="111" r="1.5" fill="#fff"/>
+          <circle cx="113" cy="113" r="7" fill="#fff"/>
+          <circle cx="114" cy="113" r="4.5" fill="#4a3040"/>
+          <circle cx="116" cy="111" r="1.5" fill="#fff"/>
+          <ellipse cx="100" cy="124" rx="4" ry="3" fill="#f5a0b8"/>
+          <path d="M96 127 Q100 131 104 127" stroke="#c97a90" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <line x1="68" y1="122" x2="92" y2="125" stroke="#c8b8c0" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="66" y1="127" x2="92" y2="127" stroke="#c8b8c0" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="108" y1="125" x2="132" y2="122" stroke="#c8b8c0" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="108" y1="127" x2="134" y2="127" stroke="#c8b8c0" stroke-width="1.2" stroke-linecap="round"/>
+          <ellipse cx="100" cy="172" rx="26" ry="24" fill="#fff5f8"/>
+          <ellipse cx="68" cy="196" rx="14" ry="10" fill="#f9f0f5"/>
+          <ellipse cx="132" cy="196" rx="14" ry="10" fill="#f9f0f5"/>
+          <ellipse cx="61" cy="200" rx="5" ry="3.5" fill="#f5c6d8"/>
+          <ellipse cx="68" cy="202" rx="5" ry="3.5" fill="#f5c6d8"/>
+          <ellipse cx="75" cy="200" rx="5" ry="3.5" fill="#f5c6d8"/>
+          <ellipse cx="125" cy="200" rx="5" ry="3.5" fill="#f5c6d8"/>
+          <ellipse cx="132" cy="202" rx="5" ry="3.5" fill="#f5c6d8"/>
+          <ellipse cx="139" cy="200" rx="5" ry="3.5" fill="#f5c6d8"/>
+          <rect x="85" y="150" width="30" height="22" rx="3" fill="#c94b0a"/>
+          <rect x="85" y="150" width="4" height="22" rx="2" fill="#a33a06"/>
+          <line x1="93" y1="156" x2="111" y2="156" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+          <line x1="93" y1="161" x2="111" y2="161" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+          <line x1="93" y1="166" x2="105" y2="166" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+          <text x="22" y="88" font-size="16" opacity="0.7">&#x2728;</text>
+          <text x="158" y="78" font-size="13" opacity="0.6">&#x2B50;</text>
+          <text x="155" y="105" font-size="10" opacity="0.5">&#x2726;</text>
+        </svg>
       </div>
-      <div class="login-note">Progress is saved on this device. No account required.</div>
+      <div class="welcome-greeting">Welcome back,</div>
+      <div class="welcome-name">Zhu Ziyan! &#x1F338;</div>
+      <div class="welcome-msg">Ready for today's learning adventure?<br>Your brain is going to grow stronger! &#x1F4AA;</div>
+      <button class="welcome-btn" onclick="startAsZhuZiyan()">Let's Start Learning &#x2192;</button>
+      <div class="welcome-footer">SG Study Quiz &middot; MOE P3&ndash;P4</div>
     </div>
   </div>
 </div>
@@ -456,7 +511,7 @@ header{background:var(--ink);color:#fff;height:58px;display:flex;align-items:cen
 const CONFIG = {
   // Publish your Google Sheet: File → Share → Publish to web → CSV
   // Paste the URL here. Leave empty to use embedded sample questions.
-  sheetCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTNdnNo4USE3lXCA9vzX60XmTkNWLqVCCjpMKeo25-BWG3Ni-eauSC0LhJzSSFFxEE33mqsL5vcA-CJ/pubhtml',
+  sheetCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTNdnNo4USE3lXCA9vzX60XmTkNWLqVCCjpMKeo25-BWG3Ni-eauSC0LhJzSSFFxEE33mqsL5vcA-CJ/pub?output=csv',
   stripeUrl: 'https://buy.stripe.com/your-link-here', // replace with your Stripe link
   premiumCode: 'SGQUIZ2024' // simple unlock code
 };
@@ -538,26 +593,41 @@ function parseCSVRow(line) {
 // ═══════════════════════════════════════════════════
 async function loadData() {
   const statusEl = document.getElementById('data-status');
+
+  // ── 1. Use embedded questions first (always works, no network needed) ──
+  if (EMBEDDED_QUESTIONS.length > 0) {
+    allQuestions = EMBEDDED_QUESTIONS;
+    statusEl.innerHTML = '';
+    console.log('✅ Using', allQuestions.length, 'embedded questions.');
+    return;
+  }
+
+  // ── 2. If no embedded questions, try fetching from Google Sheet ──
   if (CONFIG.sheetCsvUrl) {
     statusEl.innerHTML = '<div class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading questions…</div></div>';
-    try {
-      const res = await fetch(CONFIG.sheetCsvUrl);
-      const text = await res.text();
-      allQuestions = parseCSV(text);
-      statusEl.innerHTML = '';
-      console.log('Loaded', allQuestions.length, 'questions from sheet');
-    } catch(e) {
-      console.warn('Sheet fetch failed, using embedded questions', e);
-      allQuestions = EMBEDDED_QUESTIONS;
-      statusEl.innerHTML = '<div class="setup-banner">⚠️ Could not load from Google Sheet. Using <strong>sample questions</strong>. <a href="#" onclick="showSetupHelp()" style="color:var(--accent2)">How to connect your sheet →</a></div>';
+    const proxies = [
+      CONFIG.sheetCsvUrl,
+      'https://corsproxy.io/?' + encodeURIComponent(CONFIG.sheetCsvUrl),
+      'https://api.allorigins.win/raw?url=' + encodeURIComponent(CONFIG.sheetCsvUrl)
+    ];
+    for (const url of proxies) {
+      try {
+        const res = await fetch(url);
+        if (!res.ok) continue;
+        const text = await res.text();
+        const parsed = parseCSV(text);
+        if (parsed.length === 0) continue;
+        allQuestions = parsed;
+        statusEl.innerHTML = '';
+        console.log('✅ Loaded', allQuestions.length, 'questions from sheet.');
+        return;
+      } catch(e) { console.warn('Fetch failed:', e.message); }
     }
+    allQuestions = [];
+    statusEl.innerHTML = '<div class="setup-banner">⚠️ Could not load questions from Google Sheet. Make sure it is published as CSV. <a href="#" onclick="showSetupHelp()" style="color:var(--accent2)">How to set up →</a></div>';
   } else {
-    allQuestions = EMBEDDED_QUESTIONS;
-    if (EMBEDDED_QUESTIONS.length < 50) {
-      statusEl.innerHTML = '<div class="setup-banner">📋 Using sample questions. To use your full question bank: <strong>1.</strong> Open your Google Sheet → File → Share → Publish to web → CSV → copy the URL. <strong>2.</strong> Open this HTML file in a text editor and paste the URL in <code>CONFIG.sheetCsvUrl</code>.</div>';
-    } else {
-      statusEl.innerHTML = '';
-    }
+    allQuestions = [];
+    statusEl.innerHTML = '<div class="setup-banner">📋 No question bank connected yet. Open this file in a text editor and paste your Google Sheet CSV URL in <code>CONFIG.sheetCsvUrl</code>. <a href="#" onclick="showSetupHelp()" style="color:var(--accent2)">More details →</a></div>';
   }
 }
 
@@ -1044,168 +1114,26 @@ function confettiShow() {
 }
 
 // ═══════════════════════════════════════════════════
-//  EMBEDDED SAMPLE QUESTIONS (used when no sheet URL)
+//  QUESTIONS — loaded from Google Sheet (see CONFIG.sheetCsvUrl)
 // ═══════════════════════════════════════════════════
 const EMBEDDED_QUESTIONS = [
-{"subject": "English Language", "level": "P3", "topic": "Tenses", "question": "By the time we arrived, the show ___.", "option_a": "had already started", "option_b": "has already started", "option_c": "already started", "option_d": "is already starting", "correct_answer": "A", "explanation": "Past perfect for event before another past event.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Vocabulary", "question": "She is interested ___ painting.", "option_a": "on", "option_b": "at", "option_c": "in", "option_d": "for", "correct_answer": "C", "explanation": "'Interested in'.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Pronouns", "question": "Correct pronoun use?", "option_a": "Him and I went.", "option_b": "He and I went.", "option_c": "Me and him went.", "option_d": "Him and me went.", "correct_answer": "B", "explanation": "'He and I' — both subject pronouns.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Grammar", "question": "The book, ___ was old, was still readable.", "option_a": "who", "option_b": "whom", "option_c": "which", "option_d": "what", "correct_answer": "C", "explanation": "'Which' for things.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Vocabulary", "question": "Synonym for 'generous'?", "option_a": "stingy", "option_b": "kind-hearted", "option_c": "selfish", "option_d": "rude", "correct_answer": "B", "explanation": "Kind-hearted.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Conjunctions", "question": "She was tired ___ she continued working.", "option_a": "and", "option_b": "but", "option_c": "so", "option_d": "or", "correct_answer": "B", "explanation": "'But' shows contrast.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Tenses", "question": "Passive voice sentence?", "option_a": "She cooked the rice.", "option_b": "The rice was cooked by her.", "option_c": "She is cooking.", "option_d": "She had cooked.", "correct_answer": "B", "explanation": "Passive: subject receives the action.", "difficulty": "hard", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Grammar", "question": "He practises ___ every day.", "option_a": "diligent", "option_b": "diligently", "option_c": "diligence", "option_d": "more diligent", "correct_answer": "B", "explanation": "'Diligently' — adverb.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Vocabulary", "question": "'Walk without a clear direction'?", "option_a": "march", "option_b": "stroll", "option_c": "wander", "option_d": "stomp", "correct_answer": "C", "explanation": "'Wander'.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Conjunctions", "question": "___ the weather was bad, they played outside.", "option_a": "Because", "option_b": "Although", "option_c": "Since", "option_d": "Unless", "correct_answer": "B", "explanation": "'Although' — contrast.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Punctuation", "question": "Commas used correctly in a list?", "option_a": "She bought apples, oranges and, bananas.", "option_b": "She bought apples, oranges, and bananas.", "option_c": "She bought, apples oranges, and bananas.", "option_d": "She bought apples oranges, and bananas.", "correct_answer": "B", "explanation": "Commas before 'and' in a list.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Grammar", "question": "He speaks English and Chinese ___.", "option_a": "fluent", "option_b": "more fluent", "option_c": "fluently", "option_d": "fluency", "correct_answer": "C", "explanation": "'Fluently' — adverb.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Tenses", "question": "Passive: 'The teacher marked the papers.'", "option_a": "Papers marked teacher.", "option_b": "Papers were marked by teacher.", "option_c": "Teacher was marking papers.", "option_d": "Papers have marked.", "correct_answer": "B", "explanation": "Passive: papers + were marked + by teacher.", "difficulty": "hard", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Tenses", "question": "She ___ the letter before she left.", "option_a": "send", "option_b": "sent", "option_c": "has sent", "option_d": "is sending", "correct_answer": "B", "explanation": "'Sent' — past tense.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Vocabulary", "question": "'Very surprised'?", "option_a": "bored", "option_b": "confused", "option_c": "astonished", "option_d": "worried", "correct_answer": "C", "explanation": "'Astonished'.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Subject-Verb Agreement", "question": "Neither boys nor teacher ___ aware.", "option_a": "are", "option_b": "were", "option_c": "was", "option_d": "have", "correct_answer": "C", "explanation": "Closest noun 'teacher' singular → 'was'.", "difficulty": "hard", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Conjunctions", "question": "'So...that' used correctly?", "option_a": "She was so tired so she fell.", "option_b": "She was so tired that she fell.", "option_c": "She was so tired she fell so.", "option_d": "She was that tired so she fell.", "correct_answer": "B", "explanation": "'So tired that' — result.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Grammar", "question": "The old man walked ___ up stairs.", "option_a": "slow", "option_b": "slower", "option_c": "slowly", "option_d": "slowness", "correct_answer": "C", "explanation": "'Slowly' — adverb.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Subject-Verb Agreement", "question": "A group of students ___ waiting.", "option_a": "are", "option_b": "were", "option_c": "is", "option_d": "have", "correct_answer": "C", "explanation": "'A group' singular → 'is'.", "difficulty": "hard", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Vocabulary", "question": "Opposite of 'generous'?", "option_a": "kind", "option_b": "stingy", "option_c": "caring", "option_d": "humble", "correct_answer": "B", "explanation": "'Stingy'.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Tenses", "question": "She ___ in Singapore since 2015.", "option_a": "lives", "option_b": "lived", "option_c": "has lived", "option_d": "is living", "correct_answer": "C", "explanation": "'Has lived since' — present perfect.", "difficulty": "hard", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Conjunctions", "question": "'Although' used correctly?", "option_a": "Although she studied, she failed.", "option_b": "Although she studied, but she failed.", "option_c": "She failed although but studied.", "option_d": "Although, she studied she failed.", "correct_answer": "A", "explanation": "'Although + clause' without 'but'.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Adjectives", "question": "He is the ___ student in class.", "option_a": "more hardworking", "option_b": "hardworking", "option_c": "most hardworking", "option_d": "very hardworking", "correct_answer": "C", "explanation": "'Most hardworking' — superlative.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Spelling", "question": "Correct spelling?", "option_a": "accomodate", "option_b": "accommodate", "option_c": "acommodate", "option_d": "acomodate", "correct_answer": "B", "explanation": "'accommodate'.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P3", "topic": "Grammar", "question": "Results announced ___ Friday.", "option_a": "in", "option_b": "at", "option_c": "on", "option_d": "by", "correct_answer": "C", "explanation": "'On Friday'.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Whole Numbers", "question": "2345 + 1678 = ?", "option_a": "3913", "option_b": "4013", "option_c": "4023", "option_d": "3923", "correct_answer": "C", "explanation": "4023.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Whole Numbers", "question": "5000 − 2356 = ?", "option_a": "2634", "option_b": "2644", "option_c": "2654", "option_d": "2664", "correct_answer": "B", "explanation": "2644.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Multiplication Tables", "question": "12 × 9 = ?", "option_a": "96", "option_b": "99", "option_c": "108", "option_d": "112", "correct_answer": "C", "explanation": "108.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Multiplication Tables", "question": "96 ÷ 8 = ?", "option_a": "10", "option_b": "11", "option_c": "12", "option_d": "13", "correct_answer": "C", "explanation": "12.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Fractions", "question": "1/3 + 1/3 = ?", "option_a": "2/6", "option_b": "2/3", "option_c": "1/6", "option_d": "3/3", "correct_answer": "B", "explanation": "2/3.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Fractions", "question": "3/4 − 1/4 = ?", "option_a": "2/4", "option_b": "1/4", "option_c": "3/8", "option_d": "2/3", "correct_answer": "A", "explanation": "2/4 = 1/2.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Money", "question": "4 books at $12.50 each = ?", "option_a": "$48", "option_b": "$50", "option_c": "$52", "option_d": "$54", "correct_answer": "B", "explanation": "$50.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Perimeter", "question": "Square side 7 cm. Perimeter?", "option_a": "21 cm", "option_b": "24 cm", "option_c": "28 cm", "option_d": "35 cm", "correct_answer": "C", "explanation": "4×7=28 cm.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Area", "question": "Rectangle 9 cm × 4 cm. Area?", "option_a": "26 cm²", "option_b": "32 cm²", "option_c": "36 cm²", "option_d": "40 cm²", "correct_answer": "C", "explanation": "36 cm².", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Fractions", "question": "7/8 − 3/8 = ?", "option_a": "3/8", "option_b": "4/8", "option_c": "5/8", "option_d": "1/8", "correct_answer": "B", "explanation": "4/8=1/2.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Whole Numbers", "question": "6432 + 2569 = ?", "option_a": "8991", "option_b": "9001", "option_c": "9011", "option_d": "8901", "correct_answer": "B", "explanation": "9001.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Multiplication Tables", "question": "8 × 12 = ?", "option_a": "88", "option_b": "96", "option_c": "104", "option_d": "112", "correct_answer": "B", "explanation": "96.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Multiplication Tables", "question": "144 ÷ 12 = ?", "option_a": "10", "option_b": "11", "option_c": "12", "option_d": "13", "correct_answer": "C", "explanation": "12.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Perimeter", "question": "Rectangle perimeter 36 cm, length 10 cm. Width?", "option_a": "6 cm", "option_b": "7 cm", "option_c": "8 cm", "option_d": "9 cm", "correct_answer": "C", "explanation": "2(10+w)=36, w=8.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Fractions", "question": "2/5 of 25 = ?", "option_a": "8", "option_b": "10", "option_c": "12", "option_d": "15", "correct_answer": "B", "explanation": "10.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Bar Graphs", "question": "Class A=35, B=42, C=28 pupils. Total?", "option_a": "95", "option_b": "100", "option_c": "105", "option_d": "110", "correct_answer": "C", "explanation": "105.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Whole Numbers", "question": "4500 − 1876 = ?", "option_a": "2614", "option_b": "2624", "option_c": "2634", "option_d": "2644", "correct_answer": "B", "explanation": "2624.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Multiplication Tables", "question": "11 × 11 = ?", "option_a": "111", "option_b": "120", "option_c": "121", "option_d": "131", "correct_answer": "C", "explanation": "121.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Time", "question": "2 h 15 min in minutes?", "option_a": "115", "option_b": "120", "option_c": "125", "option_d": "135", "correct_answer": "D", "explanation": "135 min.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Mass", "question": "2.5 kg × 3 bags = ?", "option_a": "6 kg", "option_b": "7 kg", "option_c": "7.5 kg", "option_d": "8 kg", "correct_answer": "C", "explanation": "7.5 kg.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Fractions", "question": "3/4 of 48 = ?", "option_a": "32", "option_b": "34", "option_c": "36", "option_d": "38", "correct_answer": "C", "explanation": "36.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Area", "question": "Square area 49 cm². Side length?", "option_a": "6 cm", "option_b": "7 cm", "option_c": "8 cm", "option_d": "9 cm", "correct_answer": "B", "explanation": "√49=7 cm.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Multiplication Tables", "question": "Missing: 3 × ___ = 108", "option_a": "34", "option_b": "36", "option_c": "38", "option_d": "40", "correct_answer": "B", "explanation": "36.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Whole Numbers", "question": "9032 − 4567 = ?", "option_a": "4455", "option_b": "4465", "option_c": "4475", "option_d": "4485", "correct_answer": "B", "explanation": "4465.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "Mathematics", "level": "P3", "topic": "Length", "question": "8 m rope ÷ 40 cm pieces = ?", "option_a": "18", "option_b": "19", "option_c": "20", "option_d": "22", "correct_answer": "C", "explanation": "800÷40=20.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Diversity of Living Things", "question": "Group including mammals, birds, reptiles, amphibians, fish?", "option_a": "Vertebrates", "option_b": "Invertebrates", "option_c": "Insects", "option_d": "Arthropods", "correct_answer": "A", "explanation": "Vertebrates have a backbone.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Diversity of Living Things", "question": "Process of producing young?", "option_a": "growth", "option_b": "excretion", "option_c": "reproduction", "option_d": "respiration", "correct_answer": "C", "explanation": "Reproduction.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Diversity of Living Things", "question": "Which is an invertebrate?", "option_a": "snake", "option_b": "eagle", "option_c": "crab", "option_d": "frog", "correct_answer": "C", "explanation": "Crabs have no backbone.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Life Cycles", "question": "Correct frog life cycle?", "option_a": "egg→tadpole→froglet→adult", "option_b": "egg→froglet→tadpole→adult", "option_c": "tadpole→egg→froglet→adult", "option_d": "egg→adult→tadpole→froglet", "correct_answer": "A", "explanation": "egg→tadpole→froglet→adult frog.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Plant Reproduction", "question": "Which part contains the ovule?", "option_a": "stamen", "option_b": "petal", "option_c": "sepal", "option_d": "pistil", "correct_answer": "D", "explanation": "Pistil contains the ovule.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Plant Reproduction", "question": "Transfer of pollen from stamen to pistil?", "option_a": "making food", "option_b": "pollination", "option_c": "seed growth", "option_d": "fruit development", "correct_answer": "B", "explanation": "Pollination.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Food Chains", "question": "Correct food chain?", "option_a": "grass→rabbit→fox", "option_b": "fox→rabbit→grass", "option_c": "rabbit→grass→fox", "option_d": "grass→fox→rabbit", "correct_answer": "A", "explanation": "Energy flows: grass→rabbit→fox.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Food Chains", "question": "Organism that makes its own food?", "option_a": "consumer", "option_b": "predator", "option_c": "producer", "option_d": "decomposer", "correct_answer": "C", "explanation": "Producers make food via photosynthesis.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Water Cycle", "question": "Water evaporates from ocean and becomes?", "option_a": "ice", "option_b": "water vapour", "option_c": "heavier", "option_d": "stays liquid", "correct_answer": "B", "explanation": "Evaporation produces water vapour.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Water Cycle", "question": "Water vapour cools and forms clouds?", "option_a": "evaporation", "option_b": "precipitation", "option_c": "condensation", "option_d": "collection", "correct_answer": "C", "explanation": "Condensation.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Magnets", "question": "Poles of a magnet?", "option_a": "north and south", "option_b": "east and west", "option_c": "positive and negative", "option_d": "top and bottom", "correct_answer": "A", "explanation": "North and south poles.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Magnets", "question": "Two north poles brought together?", "option_a": "attract", "option_b": "repel", "option_c": "stick", "option_d": "nothing", "correct_answer": "B", "explanation": "Like poles repel.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Magnets", "question": "Attracted to a magnet?", "option_a": "wood", "option_b": "plastic", "option_c": "iron", "option_d": "glass", "correct_answer": "C", "explanation": "Iron is magnetic.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Magnets", "question": "NOT attracted to a magnet?", "option_a": "iron", "option_b": "steel", "option_c": "copper", "option_d": "nickel", "correct_answer": "C", "explanation": "Copper is non-magnetic.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Water Cycle", "question": "Correct water cycle order?", "option_a": "evaporation→condensation→precipitation→collection", "option_b": "condensation→evaporation→collection→precipitation", "option_c": "precipitation→evaporation→collection→condensation", "option_d": "collection→precipitation→condensation→evaporation", "correct_answer": "A", "explanation": "evaporation→condensation→precipitation→collection.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Food Chains", "question": "Animal eaten by another?", "option_a": "predator", "option_b": "producer", "option_c": "prey", "option_d": "consumer", "correct_answer": "C", "explanation": "Prey.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Food Chains", "question": "Source of energy for almost all food chains?", "option_a": "water", "option_b": "moon", "option_c": "sun", "option_d": "soil", "correct_answer": "C", "explanation": "Sun provides energy.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Plant Reproduction", "question": "Method of seed dispersal?", "option_a": "photosynthesis", "option_b": "pollination", "option_c": "wind", "option_d": "condensation", "correct_answer": "C", "explanation": "Wind disperses seeds.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Diversity of Living Things", "question": "All mammals share?", "option_a": "can fly", "option_b": "lay eggs", "option_c": "cold-blooded", "option_d": "feed young with milk", "correct_answer": "D", "explanation": "Mammals feed young with milk.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Water Cycle", "question": "Rain or snow falling from clouds?", "option_a": "vapour turning", "option_b": "clouds forming", "option_c": "precipitation", "option_d": "collection in lakes", "correct_answer": "C", "explanation": "Precipitation.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Diversity of Living Things", "question": "All living things need?", "option_a": "can fly", "option_b": "all have legs", "option_c": "nutrition", "option_d": "all are green", "correct_answer": "C", "explanation": "All living things need nutrition.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Plant Reproduction", "question": "Male reproductive part of flower?", "option_a": "pistil", "option_b": "petal", "option_c": "stamen", "option_d": "sepal", "correct_answer": "C", "explanation": "Stamen produces pollen.", "difficulty": "easy", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Food Chains", "question": "Grass→rabbit→eagle. Rabbit is?", "option_a": "producer", "option_b": "top predator", "option_c": "prey and predator", "option_d": "decomposer", "correct_answer": "C", "explanation": "Rabbit is eaten and eats.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Water Cycle", "question": "What causes rain?", "option_a": "evaporation", "option_b": "condensation in clouds", "option_c": "water in rivers", "option_d": "sun heating ground", "correct_answer": "B", "explanation": "Droplets become heavy and fall.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "Science", "level": "P3", "topic": "Plant Reproduction", "question": "Seed adapted for wind dispersal?", "option_a": "coconut", "option_b": "mango", "option_c": "dandelion", "option_d": "bean", "correct_answer": "C", "explanation": "Dandelion has feathery parachutes.", "difficulty": "medium", "is_premium": "FALSE"},
-{"subject": "English Language", "level": "P4", "topic": "Tenses", "question": "She ___ her homework by 6 pm yesterday.", "option_a": "finish", "option_b": "finished", "option_c": "had finished", "option_d": "has finished", "correct_answer": "C", "explanation": "Past perfect: completed before another past time.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Tenses", "question": "They ___ for two hours when the rain stopped.", "option_a": "walk", "option_b": "walked", "option_c": "had been walking", "option_d": "are walking", "correct_answer": "C", "explanation": "Past perfect continuous: action in progress before past event.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Tenses", "question": "By next week, she ___ the project.", "option_a": "will finish", "option_b": "will have finished", "option_c": "finishes", "option_d": "has finished", "correct_answer": "B", "explanation": "Future perfect: completed before a future time.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Tenses", "question": "The letter ___ yesterday.", "option_a": "was sent", "option_b": "sent", "option_c": "is sent", "option_d": "has sent", "correct_answer": "A", "explanation": "Passive past simple: the letter was sent.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Active and Passive", "question": "'The chef cooked the meal.' Change to passive.", "option_a": "The meal cooked the chef.", "option_b": "The meal was cooked by the chef.", "option_c": "The meal is cooked by the chef.", "option_d": "The meal has been cooked.", "correct_answer": "B", "explanation": "Passive: subject + was/were + past participle + by + agent.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Active and Passive", "question": "'A dog bit the postman.' Change to passive.", "option_a": "The postman bitten by a dog.", "option_b": "The postman was bit by a dog.", "option_c": "The postman was bitten by a dog.", "option_d": "The postman has been bitten.", "correct_answer": "C", "explanation": "Was bitten by a dog.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Active and Passive", "question": "'The students are painting the mural.' Change to passive.", "option_a": "The mural painted by students.", "option_b": "The mural is being painted by the students.", "option_c": "The mural was being painted.", "option_d": "The mural has been painted.", "correct_answer": "B", "explanation": "Is being painted — present continuous passive.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Active and Passive", "question": "'Someone will announce the results tomorrow.' Change to passive.", "option_a": "The results announce tomorrow.", "option_b": "The results will be announced tomorrow.", "option_c": "The results are announced tomorrow.", "option_d": "The results were announced tomorrow.", "correct_answer": "B", "explanation": "Will be announced — future passive.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Active and Passive", "question": "'They have completed the bridge.' Change to passive.", "option_a": "The bridge has been completed.", "option_b": "The bridge was completed.", "option_c": "The bridge completed.", "option_d": "The bridge is being completed.", "correct_answer": "A", "explanation": "Present perfect passive: has been completed.", "difficulty": "hard", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Direct and Indirect Speech", "question": "'I am tired,' she said. Change to indirect speech.", "option_a": "She said that she was tired.", "option_b": "She said that I was tired.", "option_c": "She said that she is tired.", "option_d": "She says she was tired.", "correct_answer": "A", "explanation": "'I' → 'she', 'am' → 'was'.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Direct and Indirect Speech", "question": "He said, 'I will come tomorrow.' Change to indirect.", "option_a": "He said that he would come the next day.", "option_b": "He said he will come tomorrow.", "option_c": "He said that I would come tomorrow.", "option_d": "He told that he would come.", "correct_answer": "A", "explanation": "Will→would, tomorrow→next day, I→he.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Direct and Indirect Speech", "question": "She asked, 'Are you coming?' Change to indirect.", "option_a": "She asked if I was coming.", "option_b": "She asked if she was coming.", "option_c": "She asked if you are coming.", "option_d": "She asked that I was coming.", "correct_answer": "A", "explanation": "'Are you coming?' → asked if I was coming.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Direct and Indirect Speech", "question": "'Don't touch that!' he shouted. Indirect?", "option_a": "He shouted not to touch that.", "option_b": "He shouted don't touch that.", "option_c": "He shouted that don't touch that.", "option_d": "He told me to not touch that.", "correct_answer": "A", "explanation": "Command in indirect: told/shouted + not to + base verb.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Direct and Indirect Speech", "question": "'Have you finished your work?' the teacher asked. Indirect?", "option_a": "The teacher asked if we had finished our work.", "option_b": "The teacher asked if you have finished your work.", "option_c": "The teacher asked that we finished.", "option_d": "The teacher asked had we finished.", "correct_answer": "A", "explanation": "If + past perfect + pronoun change.", "difficulty": "hard", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Synthesis and Transformation", "question": "Combine: 'She was tired. She kept working.' (using 'although')", "option_a": "Although she was tired, she kept working.", "option_b": "She was tired, although she kept working.", "option_c": "Although she kept working, she was tired.", "option_d": "She was tired although kept working.", "correct_answer": "A", "explanation": "Although + clause, clause.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Synthesis and Transformation", "question": "Combine: 'He studied hard. He passed the exam.' (using 'so')", "option_a": "He studied hard, so he passed the exam.", "option_b": "He passed, so he studied hard.", "option_c": "He studied hard so that he passes.", "option_d": "So he studied hard, he passed.", "correct_answer": "A", "explanation": "Cause + so + result.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Synthesis and Transformation", "question": "Rewrite: 'The match was cancelled because of the heavy rain.' (Begin: Due to...)", "option_a": "Due to the heavy rain, the match was cancelled.", "option_b": "Due to the heavy rain the match cancelled.", "option_c": "Due to the heavy rain, match was cancelled.", "option_d": "Due to the heavy rain, the match will cancel.", "correct_answer": "A", "explanation": "Due to + noun phrase, rest of sentence.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Synthesis and Transformation", "question": "Rewrite: 'It was such a hot day that we stayed indoors.' (Begin: The day was so...)", "option_a": "The day was so hot that we stayed indoors.", "option_b": "The day was so hot we stayed indoors.", "option_c": "The day was such hot that we stayed.", "option_d": "The day was so hot as to stay indoors.", "correct_answer": "A", "explanation": "So + adjective + that.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Synthesis and Transformation", "question": "Rewrite in passive: 'The principal presented the prizes.'", "option_a": "The prizes presented by the principal.", "option_b": "The prizes were presented by the principal.", "option_c": "The prizes are presented by the principal.", "option_d": "The prizes have been presented.", "correct_answer": "B", "explanation": "Were presented by the principal.", "difficulty": "hard", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Synthesis and Transformation", "question": "Combine: 'She is tall. Her sister is short.' (using 'whereas')", "option_a": "She is tall, whereas her sister is short.", "option_b": "Whereas she is tall, her sister is short too.", "option_c": "She is tall whereas but her sister is short.", "option_d": "She is tall, whereas her sister short.", "correct_answer": "A", "explanation": "Whereas shows contrast between two clauses.", "difficulty": "hard", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Vocabulary", "question": "The word 'benevolent' means?", "option_a": "cruel", "option_b": "generous and kind", "option_c": "timid", "option_d": "greedy", "correct_answer": "B", "explanation": "Benevolent = kind and generous.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Vocabulary", "question": "Choose the correct phrasal verb: She ___ her mother, they look so alike.", "option_a": "takes after", "option_b": "takes over", "option_c": "takes up", "option_d": "takes off", "correct_answer": "A", "explanation": "Takes after = resembles.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Vocabulary", "question": "___ her shyness, she gave a brilliant speech.", "option_a": "Because of", "option_b": "In spite of", "option_c": "Due to", "option_d": "As a result of", "correct_answer": "B", "explanation": "In spite of = despite, showing contrast.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Vocabulary", "question": "The hikers were ___ by the stunning mountain view.", "option_a": "bored", "option_b": "puzzled", "option_c": "awestruck", "option_d": "irritated", "correct_answer": "C", "explanation": "Awestruck = overwhelmed with awe.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "English Language", "level": "P4", "topic": "Vocabulary", "question": "Find the word closest in meaning to 'frugal'.", "option_a": "wasteful", "option_b": "thrifty", "option_c": "generous", "option_d": "careless", "correct_answer": "B", "explanation": "Frugal = thrifty, careful with money.", "difficulty": "hard", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Whole Numbers", "question": "What is 56 789 + 23 456?", "option_a": "79 245", "option_b": "80 245", "option_c": "80 145", "option_d": "79 345", "correct_answer": "B", "explanation": "56789+23456=80245.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Whole Numbers", "question": "What is 90 000 − 34 567?", "option_a": "55 333", "option_b": "55 433", "option_c": "55 443", "option_d": "54 433", "correct_answer": "B", "explanation": "90000−34567=55433.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Whole Numbers", "question": "What is the value of 7 in 374 826?", "option_a": "7", "option_b": "70", "option_c": "7000", "option_d": "70 000", "correct_answer": "D", "explanation": "7 is in the ten-thousands place.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Whole Numbers", "question": "Round 48 763 to the nearest thousand.", "option_a": "48 000", "option_b": "49 000", "option_c": "48 700", "option_d": "49 700", "correct_answer": "B", "explanation": "763 ≥ 500 so round up to 49000.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Whole Numbers", "question": "Round 23 450 to the nearest hundred.", "option_a": "23 400", "option_b": "23 500", "option_c": "23 000", "option_d": "24 000", "correct_answer": "B", "explanation": "450 rounds up to 23500.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Factors and Multiples", "question": "List all factors of 12.", "option_a": "1,2,3,4,6,12", "option_b": "1,2,4,6,12", "option_c": "1,2,3,6,12", "option_d": "2,3,4,6", "correct_answer": "A", "explanation": "Factors of 12: 1,2,3,4,6,12.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Factors and Multiples", "question": "Is 7 a factor of 56?", "option_a": "No", "option_b": "Yes", "option_c": "Sometimes", "option_d": "Cannot tell", "correct_answer": "B", "explanation": "56÷7=8, so 7 is a factor.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Factors and Multiples", "question": "What is the first common multiple of 4 and 6?", "option_a": "12", "option_b": "18", "option_c": "24", "option_d": "6", "correct_answer": "A", "explanation": "LCM(4,6)=12.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Factors and Multiples", "question": "Which of these is a prime number?", "option_a": "9", "option_b": "15", "option_c": "17", "option_d": "21", "correct_answer": "C", "explanation": "17 has no factors other than 1 and itself.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Factors and Multiples", "question": "What is the HCF of 18 and 24?", "option_a": "3", "option_b": "6", "option_c": "9", "option_d": "12", "correct_answer": "B", "explanation": "HCF(18,24)=6.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Factors and Multiples", "question": "What is the LCM of 5 and 8?", "option_a": "20", "option_b": "30", "option_c": "40", "option_d": "45", "correct_answer": "C", "explanation": "LCM(5,8)=40.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Factors and Multiples", "question": "Which numbers between 1 and 20 are prime?", "option_a": "2,3,5,7,11,13,17,19", "option_b": "2,3,5,7,9,11,13,17,19", "option_c": "2,3,5,7,11,13,15,17,19", "option_d": "1,2,3,5,7,11,13,17,19", "correct_answer": "A", "explanation": "Primes 1–20: 2,3,5,7,11,13,17,19.", "difficulty": "hard", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Fractions", "question": "What is 3/4 + 1/8?", "option_a": "7/8", "option_b": "6/8", "option_c": "4/8", "option_d": "8/12", "correct_answer": "A", "explanation": "6/8+1/8=7/8.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Fractions", "question": "What is 5/6 − 1/3?", "option_a": "4/3", "option_b": "3/6", "option_c": "1/2", "option_d": "4/6", "correct_answer": "C", "explanation": "5/6−2/6=3/6=1/2.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Fractions", "question": "What is 2 1/3 + 1 2/3?", "option_a": "3 1/3", "option_b": "4", "option_c": "3 2/3", "option_d": "4 1/3", "correct_answer": "B", "explanation": "2+1=3, 1/3+2/3=1, total=4.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Fractions", "question": "What is 3 1/2 − 1 3/4?", "option_a": "2 1/4", "option_b": "1 3/4", "option_c": "1 1/4", "option_d": "2 3/4", "correct_answer": "B", "explanation": "7/2−7/4=14/4−7/4=7/4=1 3/4.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Fractions", "question": "Which fraction is equivalent to 3/4?", "option_a": "6/9", "option_b": "9/12", "option_c": "8/10", "option_d": "6/10", "correct_answer": "B", "explanation": "9/12=3/4.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Fractions", "question": "Arrange in order (smallest first): 1/2, 2/3, 3/8", "option_a": "3/8, 1/2, 2/3", "option_b": "1/2, 2/3, 3/8", "option_c": "2/3, 1/2, 3/8", "option_d": "3/8, 2/3, 1/2", "correct_answer": "A", "explanation": "3/8=0.375, 1/2=0.5, 2/3=0.667.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Fractions", "question": "What is 2/3 × 9?", "option_a": "5", "option_b": "6", "option_c": "7", "option_d": "8", "correct_answer": "B", "explanation": "2/3×9=6.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Fractions", "question": "What is 3/5 of 2/3?", "option_a": "2/5", "option_b": "5/8", "option_c": "6/15", "option_d": "1/2", "correct_answer": "A", "explanation": "3/5×2/3=6/15=2/5.", "difficulty": "hard", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Decimals", "question": "What is 3.5 + 2.8?", "option_a": "5.3", "option_b": "6.0", "option_c": "6.3", "option_d": "6.5", "correct_answer": "C", "explanation": "3.5+2.8=6.3.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Decimals", "question": "What is 7.2 − 4.6?", "option_a": "2.4", "option_b": "2.5", "option_c": "2.6", "option_d": "3.4", "correct_answer": "C", "explanation": "7.2−4.6=2.6.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Decimals", "question": "Write 0.75 as a fraction in simplest form.", "option_a": "3/5", "option_b": "7/10", "option_c": "3/4", "option_d": "75/10", "correct_answer": "C", "explanation": "0.75=75/100=3/4.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Decimals", "question": "What is 4.3 × 10?", "option_a": "4.30", "option_b": "43", "option_c": "430", "option_d": "0.43", "correct_answer": "B", "explanation": "Moving decimal right: 43.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Mathematics", "level": "P4", "topic": "Decimals", "question": "What is 3.6 × 5?", "option_a": "15", "option_b": "16", "option_c": "17", "option_d": "18", "correct_answer": "D", "explanation": "3.6×5=18.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Digestion", "question": "What is the first organ food enters after the mouth?", "option_a": "stomach", "option_b": "small intestine", "option_c": "oesophagus", "option_d": "large intestine", "correct_answer": "C", "explanation": "Food travels from the mouth down the oesophagus.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Digestion", "question": "Where does most digestion and absorption of nutrients occur?", "option_a": "stomach", "option_b": "small intestine", "option_c": "large intestine", "option_d": "liver", "correct_answer": "B", "explanation": "Most digestion and absorption happens in the small intestine.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Digestion", "question": "What is the role of saliva in digestion?", "option_a": "to absorb nutrients", "option_b": "to break down food chemically and lubricate it", "option_c": "to produce acid", "option_d": "to store food", "correct_answer": "B", "explanation": "Saliva contains enzymes that begin breaking down food.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Digestion", "question": "What is the role of the stomach?", "option_a": "absorb water", "option_b": "produce bile", "option_c": "churn food and mix it with acid", "option_d": "filter blood", "correct_answer": "C", "explanation": "Stomach churns food and mixes it with acid.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Digestion", "question": "What does the large intestine primarily do?", "option_a": "digest proteins", "option_b": "produce enzymes", "option_c": "absorb water and form faeces", "option_d": "absorb nutrients", "correct_answer": "C", "explanation": "Large intestine absorbs water.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Digestion", "question": "Which organ produces bile?", "option_a": "stomach", "option_b": "pancreas", "option_c": "liver", "option_d": "small intestine", "correct_answer": "C", "explanation": "The liver produces bile.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Digestion", "question": "Why is it important to chew food thoroughly?", "option_a": "to make it taste better", "option_b": "to increase surface area for enzyme action", "option_c": "to make it colourful", "option_d": "to produce more saliva", "correct_answer": "B", "explanation": "Smaller pieces = more surface area for enzymes to work.", "difficulty": "hard", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Digestion", "question": "Where does bile go after it is produced?", "option_a": "directly into the blood", "option_b": "into the small intestine to break down fats", "option_c": "into the stomach to digest proteins", "option_d": "into the large intestine", "correct_answer": "B", "explanation": "Bile is released into the small intestine to emulsify fats.", "difficulty": "hard", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Respiratory System", "question": "What is the main function of the respiratory system?", "option_a": "pump blood", "option_b": "digest food", "option_c": "exchange oxygen and carbon dioxide", "option_d": "filter waste", "correct_answer": "C", "explanation": "The respiratory system exchanges O₂ and CO₂.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Respiratory System", "question": "Which organ is responsible for breathing?", "option_a": "heart", "option_b": "kidneys", "option_c": "lungs", "option_d": "liver", "correct_answer": "C", "explanation": "Lungs carry out gas exchange.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Respiratory System", "question": "What gas do we breathe in?", "option_a": "carbon dioxide", "option_b": "nitrogen only", "option_c": "oxygen", "option_d": "hydrogen", "correct_answer": "C", "explanation": "We breathe in oxygen.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Respiratory System", "question": "What gas do we breathe out in higher amounts?", "option_a": "oxygen", "option_b": "nitrogen", "option_c": "carbon dioxide", "option_d": "helium", "correct_answer": "C", "explanation": "We breathe out more CO₂ than we breathe in.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Respiratory System", "question": "What is the role of the diaphragm?", "option_a": "produce enzymes", "option_b": "pump blood", "option_c": "help the lungs expand and contract", "option_d": "filter toxins", "correct_answer": "C", "explanation": "The diaphragm is a muscle that controls breathing.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Respiratory System", "question": "What are the tiny air sacs in the lungs called?", "option_a": "bronchi", "option_b": "alveoli", "option_c": "capillaries", "option_d": "trachea", "correct_answer": "B", "explanation": "Alveoli are tiny air sacs where gas exchange occurs.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Respiratory System", "question": "Why do the alveoli have a very large surface area?", "option_a": "to store more air", "option_b": "to allow more efficient gas exchange", "option_c": "to produce more mucus", "option_d": "to keep the lungs clean", "correct_answer": "B", "explanation": "Large surface area = faster gas exchange.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Respiratory System", "question": "Smoking damages cilia in the respiratory tract. This means?", "option_a": "more oxygen is absorbed", "option_b": "mucus and particles cannot be cleared", "option_c": "the lungs produce more alveoli", "option_d": "breathing becomes easier", "correct_answer": "B", "explanation": "Cilia normally sweep mucus and particles out; damage means they accumulate.", "difficulty": "hard", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Circulatory System", "question": "What is the main function of the circulatory system?", "option_a": "digest food", "option_b": "transport blood, oxygen and nutrients around the body", "option_c": "filter waste from blood", "option_d": "produce hormones", "correct_answer": "B", "explanation": "Circulatory system transports blood, oxygen and nutrients.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Circulatory System", "question": "What does the heart do?", "option_a": "produce blood", "option_b": "store oxygen", "option_c": "pump blood around the body", "option_d": "filter blood", "correct_answer": "C", "explanation": "The heart pumps blood.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Circulatory System", "question": "What are blood vessels that carry blood AWAY from the heart called?", "option_a": "veins", "option_b": "capillaries", "option_c": "arteries", "option_d": "valves", "correct_answer": "C", "explanation": "Arteries carry blood away from the heart.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Circulatory System", "question": "What are blood vessels that carry blood BACK to the heart called?", "option_a": "arteries", "option_b": "capillaries", "option_c": "valves", "option_d": "veins", "correct_answer": "D", "explanation": "Veins carry blood back to the heart.", "difficulty": "easy", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Circulatory System", "question": "What is the role of red blood cells?", "option_a": "fight infection", "option_b": "carry oxygen", "option_c": "clot blood", "option_d": "produce hormones", "correct_answer": "B", "explanation": "Red blood cells carry oxygen via haemoglobin.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Circulatory System", "question": "What do white blood cells do?", "option_a": "carry oxygen", "option_b": "clot blood", "option_c": "fight infection and disease", "option_d": "carry nutrients", "correct_answer": "C", "explanation": "White blood cells defend the body against infection.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Circulatory System", "question": "Why is exercise good for the heart?", "option_a": "it makes the heart smaller", "option_b": "it strengthens the heart muscle", "option_c": "it reduces blood flow", "option_d": "it produces more red cells", "correct_answer": "B", "explanation": "Exercise strengthens the heart muscle, improving efficiency.", "difficulty": "medium", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Circulatory System", "question": "Why do arteries have thick, muscular walls?", "option_a": "to absorb nutrients", "option_b": "to withstand high pressure of blood pumped from heart", "option_c": "to carry blood slowly", "option_d": "to produce blood cells", "correct_answer": "B", "explanation": "Arteries need thick walls to handle high blood pressure.", "difficulty": "hard", "is_premium": "TRUE"},
-{"subject": "Science", "level": "P4", "topic": "Circulatory System", "question": "What happens when blood vessels become blocked with fatty deposits?", "option_a": "blood flows faster", "option_b": "blood pressure drops", "option_c": "blood cannot flow freely — risk of heart attack", "option_d": "oxygen is absorbed faster", "correct_answer": "C", "explanation": "Blocked vessels reduce blood flow, risking heart attack.", "difficulty": "hard", "is_premium": "TRUE"}
 ];
+
+
+function startAsZhuZiyan() {
+  const name = 'Zhu Ziyan';
+  const users = getUsers();
+  if (!users[name]) users[name] = {quizCount:0, totalCorrect:0, premium:false};
+  saveUsers(users);
+  enterApp(name);
+}
 
 // ═══════════════════════════════════════════════════
 //  BOOT
 // ═══════════════════════════════════════════════════
 (async function boot() {
-  allQuestions = EMBEDDED_QUESTIONS; // set immediately so pickLevel always works
-  renderLoginChips();
-  await loadData(); // may override with sheet data if URL configured
+  allQuestions = [];
+  await loadData();
   const saved = getSession();
   const users = getUsers();
   if (saved && users[saved]) {
@@ -1214,9 +1142,6 @@ const EMBEDDED_QUESTIONS = [
     document.getElementById('s-login').style.display = 'block';
     document.getElementById('app-shell').style.display = 'none';
   }
-  document.getElementById('login-name').addEventListener('keydown', e => {
-    if (e.key === 'Enter') doLogin();
-  });
 })();
 </script>
 </body>
