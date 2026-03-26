@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SG Study Quiz · P3–P4 MOE Syllabus</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3f0ea;--card:#fffdf8;--ink:#17120e;--ink2:#6a5c4f;
+  --accent:#c94b0a;--accent2:#1460b0;--green:#1a9456;
+  --red:#c42b2b;--amber:#d08800;--purple:#7b35c4;
+  --teal:#0e8a7a;--border:#ddd0bc;--shadow:rgba(70,40,10,.10);
+  --r:14px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;}
+
+header{background:var(--ink);color:#fff;height:58px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:200;
+  box-shadow:0 2px 14px rgba(0,0,0,.28);}
+.logo{font-family:'DM Serif Display',serif;font-size:19px;letter-spacing:.3px;}
+.logo em{color:var(--accent);font-style:normal;}
+.app{max-width:960px;margin:0 auto;padding:26px 18px 80px;}
+.screen{display:none;animation:fadeUp .38s ease both;}
+.screen.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* HOME LAYOUT */
+.home-layout{display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start;}
+@media(max-width:760px){.home-layout{grid-template-columns:1fr;}}
+
+/* ERROR BANK SIDEBAR */
+.eb-sidebar{background:var(--card);border:2px solid var(--border);border-radius:18px;
+  padding:22px 20px;box-shadow:0 4px 20px var(--shadow);position:sticky;top:78px;}
+.eb-sidebar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.eb-sidebar-title{font-family:'DM Serif Display',serif;font-size:18px;display:flex;align-items:center;gap:8px;}
+.eb-count-chip{background:var(--red);color:#fff;font-size:11px;font-weight:900;border-radius:20px;padding:2px 9px;}
+.eb-mini-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;}
+.eb-mini-stat{background:var(--bg);border-radius:10px;padding:10px 8px;text-align:center;}
+.eb-mini-stat-num{font-size:20px;font-weight:900;}
+.eb-mini-stat-lbl{font-size:9px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.7px;margin-top:1px;}
+.eb-empty-mini{text-align:center;padding:24px 10px;color:var(--ink2);}
+.eb-empty-mini-icon{font-size:36px;margin-bottom:8px;}
+.eb-empty-mini-text{font-size:13px;font-weight:700;margin-bottom:3px;}
+.eb-empty-mini-sub{font-size:11px;line-height:1.5;}
+.eb-mini-list{display:flex;flex-direction:column;gap:7px;max-height:300px;overflow-y:auto;margin-bottom:14px;}
+.eb-mini-item{background:var(--bg);border-radius:9px;padding:9px 11px;border-left:3px solid var(--red);position:relative;}
+.eb-mini-item.mastered{border-left-color:var(--green);}
+.eb-mini-item-topic{font-size:9.5px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px;}
+.eb-mini-item-q{font-size:11.5px;font-weight:700;line-height:1.4;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
+.eb-mini-item-ans{font-size:11px;color:var(--green);font-weight:700;margin-top:2px;}
+.eb-mini-remove{position:absolute;top:6px;right:7px;background:none;border:none;
+  color:var(--ink2);cursor:pointer;font-size:13px;opacity:.5;line-height:1;}
+.eb-mini-remove:hover{opacity:1;color:var(--red);}
+.eb-mini-actions{display:flex;flex-direction:column;gap:7px;}
+.btn-practice-eb{background:var(--green);color:#fff;border:none;border-radius:10px;
+  padding:11px 16px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;
+  cursor:pointer;transition:all .18s;width:100%;display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn-practice-eb:hover{filter:brightness(1.08);transform:translateY(-1px);}
+.btn-practice-eb:disabled{opacity:.4;cursor:default;transform:none;}
+.btn-clear-eb{background:none;border:1.5px solid var(--border);border-radius:10px;
+  padding:8px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;
+  cursor:pointer;color:var(--ink2);transition:all .18s;width:100%;}
+.btn-clear-eb:hover{border-color:var(--red);color:var(--red);}
+
+/* SELECTOR CARDS */
+.sel-grid{display:grid;gap:11px;margin-bottom:24px;}
+.sel-grid.col2{grid-template-columns:repeat(2,1fr);}
+.sel-grid.col3{grid-template-columns:repeat(3,1fr);}
+.sel-grid.col4{grid-template-columns:repeat(4,1fr);}
+.sel-grid.col6{grid-template-columns:repeat(6,1fr);}
+@media(max-width:600px){
+  .sel-grid.col3,.sel-grid.col4,.sel-grid.col6{grid-template-columns:repeat(2,1fr);}
+}
+.sel-card{background:var(--card);border:2px solid var(--border);border-radius:var(--r);
+  padding:18px 14px;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1);
+  text-align:center;position:relative;overflow:hidden;user-select:none;}
+.sel-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:var(--tc,var(--accent));transform:scaleX(0);transform-origin:left;transition:transform .2s;}
+.sel-card:hover{transform:translateY(-3px);box-shadow:0 10px 26px var(--shadow);border-color:var(--tc,var(--accent));}
+.sel-card:hover::after,.sel-card.sel-active::after{transform:scaleX(1);}
+.sel-card.sel-active{border-color:var(--tc,var(--accent));
+  background:color-mix(in srgb,var(--tc,var(--accent)) 8%,var(--card));}
+.sel-card.locked{opacity:.6;cursor:not-allowed;}
+.sel-card.locked:hover{transform:none;box-shadow:none;border-color:var(--border);}
+.sel-card.locked::after{display:none;}
+.sel-icon{font-size:26px;margin-bottom:7px;}
+.sel-title{font-weight:800;font-size:13.5px;margin-bottom:2px;}
+.sel-sub{font-size:10.5px;color:var(--ink2);line-height:1.4;}
+.sel-badge{position:absolute;top:9px;right:9px;font-size:9.5px;font-weight:800;
+  padding:2px 7px;border-radius:5px;color:#fff;background:var(--tc,var(--accent));}
+.lock-badge{position:absolute;top:9px;right:9px;font-size:11px;}
+
+/* SECTION LABELS / HERO */
+.slabel{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;
+  color:var(--ink2);margin-bottom:11px;margin-top:2px;}
+.hero-title{font-family:'DM Serif Display',serif;font-size:clamp(24px,3.8vw,40px);line-height:1.2;margin-bottom:7px;}
+.hero-title em{color:var(--accent);font-style:italic;}
+.hero-sub{font-size:13.5px;color:var(--ink2);font-weight:600;line-height:1.65;margin-bottom:20px;max-width:480px;}
+.moe-tag{display:inline-block;background:rgba(20,96,176,.1);color:var(--accent2);
+  border:1.5px solid rgba(20,96,176,.25);border-radius:7px;font-size:11.5px;font-weight:800;
+  padding:3px 11px;margin-bottom:22px;letter-spacing:.4px;}
+.premium-tag{display:inline-block;background:rgba(208,136,0,.12);color:var(--amber);
+  border:1.5px solid rgba(208,136,0,.3);border-radius:7px;font-size:11.5px;font-weight:800;
+  padding:3px 11px;margin-left:8px;letter-spacing:.4px;}
+
+/* BUTTONS */
+.btn-primary{background:var(--accent);color:#fff;border:none;border-radius:11px;
+  padding:12px 28px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;
+  cursor:pointer;transition:all .18s;box-shadow:0 4px 13px rgba(201,75,10,.28);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 7px 18px rgba(201,75,10,.38);}
+.btn-primary:disabled{opacity:.4;cursor:default;transform:none;box-shadow:none;}
+.btn-secondary{background:transparent;color:var(--ink);border:2px solid var(--border);
+  border-radius:11px;padding:10px 20px;font-family:'Nunito',sans-serif;font-size:13.5px;
+  font-weight:700;cursor:pointer;transition:all .18s;}
+.btn-secondary:hover{border-color:var(--ink);}
+.btn-ghost{background:none;border:none;color:var(--ink2);font-size:13px;font-weight:700;
+  cursor:pointer;text-decoration:underline;font-family:'Nunito',sans-serif;}
+.btn-ghost:hover{color:var(--red);}
+.btn-green{background:var(--green);color:#fff;border:none;border-radius:11px;
+  padding:12px 26px;font-family:'Nunito',sans-serif;font-size:13.5px;font-weight:800;
+  cursor:pointer;transition:all .18s;}
+.btn-green:hover{transform:translateY(-2px);}
+.btn-amber{background:var(--amber);color:#fff;border:none;border-radius:11px;
+  padding:12px 26px;font-family:'Nunito',sans-serif;font-size:13.5px;font-weight:800;
+  cursor:pointer;transition:all .18s;}
+.btn-amber:hover{transform:translateY(-2px);}
+.action-row{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin-top:4px;}
+
+/* TOPICS GRID */
+.topics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:11px;margin-bottom:24px;}
+.topic-card{background:var(--card);border:2px solid var(--border);border-radius:12px;
+  padding:16px 14px;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1);position:relative;overflow:hidden;}
+.topic-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--tc,var(--accent));transform:scaleX(0);transform-origin:left;transition:transform .2s;}
+.topic-card:hover{transform:translateY(-3px);box-shadow:0 9px 24px var(--shadow);border-color:var(--tc,var(--accent));}
+.topic-card:hover::before,.topic-card.selected::before{transform:scaleX(1);}
+.topic-card.selected{border-color:var(--tc,var(--accent));background:color-mix(in srgb,var(--tc,var(--accent)) 7%,var(--card));}
+.tc-icon{font-size:22px;margin-bottom:6px;}
+.tc-name{font-weight:800;font-size:12.5px;margin-bottom:2px;line-height:1.3;}
+.tc-desc{font-size:10px;color:var(--ink2);line-height:1.5;}
+.tc-count{position:absolute;top:10px;right:10px;font-size:9px;font-weight:800;color:var(--ink2);
+  background:var(--bg);border-radius:5px;padding:1px 6px;}
+
+/* COUNT PILLS */
+.count-row{display:flex;gap:7px;margin-bottom:22px;flex-wrap:wrap;}
+.btn-cnt{background:transparent;color:var(--ink);border:2px solid var(--border);border-radius:9px;
+  padding:7px 17px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;}
+.btn-cnt.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+.btn-cnt:hover:not(.active){border-color:var(--ink);}
+
+/* QUIZ */
+.quiz-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:9px;}
+.prog-wrap{display:flex;align-items:center;gap:9px;}
+.prog-info{font-size:12px;font-weight:700;color:var(--ink2);}
+.prog-track{width:130px;height:7px;background:var(--border);border-radius:6px;overflow:hidden;}
+.prog-fill{height:100%;background:var(--accent);border-radius:6px;transition:width .4s ease;}
+.quiz-mode-tag{font-size:10px;font-weight:800;padding:3px 9px;border-radius:6px;text-transform:uppercase;letter-spacing:.6px;}
+.quiz-mode-tag.normal{background:rgba(20,96,176,.12);color:var(--accent2);}
+.quiz-mode-tag.errorbank{background:rgba(196,43,43,.12);color:var(--red);}
+.score-badge{font-size:12px;font-weight:800;color:var(--green);background:rgba(26,148,86,.12);border-radius:18px;padding:3px 11px;}
+.topic-pill{font-size:9.5px;font-weight:800;padding:3px 9px;border-radius:6px;color:#fff;background:var(--tc,var(--accent));text-transform:uppercase;letter-spacing:.5px;}
+.question-card{background:var(--card);border:2px solid var(--border);border-radius:17px;
+  padding:26px 30px;margin-bottom:13px;box-shadow:0 4px 18px var(--shadow);}
+@media(max-width:540px){.question-card{padding:16px 14px;}}
+.q-num-lbl{font-size:10px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;}
+.q-text{font-family:'DM Serif Display',serif;font-size:clamp(14.5px,2.1vw,19px);line-height:1.55;margin-bottom:16px;}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+@media(max-width:480px){.options-grid{grid-template-columns:1fr;}}
+.option-btn{background:var(--bg);border:2px solid var(--border);border-radius:10px;
+  padding:11px 14px;text-align:left;cursor:pointer;font-family:'Nunito',sans-serif;
+  font-size:13px;font-weight:700;color:var(--ink);transition:all .17s;display:flex;align-items:flex-start;gap:9px;width:100%;}
+.option-btn:hover:not(:disabled){border-color:var(--accent2);background:rgba(20,96,176,.06);transform:translateX(2px);}
+.opt-letter{width:23px;height:23px;border-radius:6px;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;
+  flex-shrink:0;margin-top:1px;transition:all .17s;}
+.option-btn.correct{border-color:var(--green);background:rgba(26,148,86,.09);color:#0b4d30;}
+.option-btn.correct .opt-letter{background:var(--green);color:#fff;}
+.option-btn.wrong{border-color:var(--red);background:rgba(196,43,43,.07);color:#5e1010;}
+.option-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+.option-btn:disabled{cursor:default;}
+.feedback-box{margin-top:13px;padding:12px 15px;border-radius:10px;font-size:12.5px;line-height:1.75;font-weight:600;display:none;}
+.feedback-box.show{display:block;animation:fadeUp .26s ease both;}
+.feedback-box.correct{background:rgba(26,148,86,.1);border:1.5px solid var(--green);color:#0b4d30;}
+.feedback-box.wrong{background:rgba(196,43,43,.07);border:1.5px solid var(--red);color:#5e1010;}
+.explanation{margin-top:5px;font-weight:600;color:var(--ink2);font-size:11.5px;line-height:1.8;}
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:15px;}
+.btn-next{background:var(--ink);color:#fff;border:none;border-radius:10px;padding:10px 22px;
+  font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .17s;display:none;align-items:center;gap:5px;}
+.btn-next.show{display:flex;}.btn-next:hover{background:#2a1a08;transform:translateX(2px);}
+
+/* RESULTS */
+.results-card{background:var(--card);border:2px solid var(--border);border-radius:20px;
+  padding:36px 28px;text-align:center;box-shadow:0 8px 32px var(--shadow);margin-bottom:20px;}
+.result-emoji{font-size:56px;margin-bottom:10px;}
+.result-title{font-family:'DM Serif Display',serif;font-size:28px;margin-bottom:5px;}
+.result-score{font-size:48px;font-weight:900;color:var(--accent);line-height:1;margin:10px 0 4px;}
+.result-total{font-size:13px;color:var(--ink2);font-weight:600;margin-bottom:16px;}
+.result-msg{font-size:13px;color:var(--ink2);font-weight:600;max-width:360px;margin:0 auto 20px;line-height:1.7;}
+.stat-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
+.stat-box{background:var(--bg);border-radius:10px;padding:11px 16px;text-align:center;min-width:76px;}
+.stat-num{font-size:21px;font-weight:900;}.stat-lbl{font-size:9px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:1px;}
+.eb-saved-note{background:rgba(196,43,43,.07);border:1.5px solid var(--red);border-radius:9px;
+  padding:9px 14px;text-align:center;font-size:12px;font-weight:700;color:var(--red);margin-top:12px;}
+.results-actions{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:20px;}
+.review-section{text-align:left;}
+.review-title{font-family:'DM Serif Display',serif;font-size:19px;margin-bottom:11px;}
+.review-item{background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;border-left:4px solid var(--border);}
+.review-item.ri-correct{border-left-color:var(--green);}
+.review-item.ri-wrong{border-left-color:var(--red);}
+.ri-q{font-weight:700;font-size:12.5px;margin-bottom:5px;line-height:1.5;}
+.ri-ans{font-size:11.5px;font-weight:600;}.ri-ans .ca{color:var(--green);}
+.ri-exp{font-size:11px;color:var(--ink2);margin-top:4px;line-height:1.65;}
+
+/* BACK LINK */
+.back-link{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:var(--ink2);
+  cursor:pointer;margin-bottom:18px;width:fit-content;transition:color .15s;}
+.back-link:hover{color:var(--ink);}
+
+/* SUBJECT COLOURS */
+.subj-math{--tc:#1460b0;}
+.subj-english{--tc:#c94b0a;}
+.subj-science{--tc:#0e8a7a;}
+
+/* CONFETTI */
+.confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden;}
+.dot{position:absolute;border-radius:2px;opacity:0;animation:fall 2.5s ease-in forwards;}
+@keyframes fall{0%{opacity:1;transform:translateY(-20px) rotate(0deg)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
+.divider{height:1px;background:var(--border);margin:18px 0;}
+
+/* LOGIN */
+.login-wrap{min-height:calc(100vh - 58px);display:flex;align-items:center;justify-content:center;padding:20px;}
+.login-card{background:var(--card);border:2px solid var(--border);border-radius:22px;padding:44px 40px;width:100%;max-width:420px;box-shadow:0 8px 40px var(--shadow);text-align:center;}
+@media(max-width:480px){.login-card{padding:32px 22px;}}
+.login-logo{font-family:'DM Serif Display',serif;font-size:28px;margin-bottom:4px;}
+.login-logo em{color:var(--accent);font-style:normal;}
+.login-subtitle{font-size:13px;color:var(--ink2);font-weight:600;margin-bottom:28px;line-height:1.6;}
+.login-field{text-align:left;margin-bottom:16px;}
+.login-field label{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--ink2);margin-bottom:6px;}
+.login-input{width:100%;padding:11px 14px;border:2px solid var(--border);border-radius:10px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:600;background:var(--bg);color:var(--ink);outline:none;transition:border-color .18s;}
+.login-input:focus{border-color:var(--accent2);}
+.login-err{font-size:12px;color:var(--red);font-weight:700;margin-bottom:12px;min-height:18px;text-align:left;}
+.login-btn{width:100%;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:11px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .18s;box-shadow:0 4px 14px rgba(201,75,10,.28);margin-top:4px;}
+.login-btn:hover{transform:translateY(-2px);}
+.login-note{font-size:11.5px;color:var(--ink2);margin-top:18px;line-height:1.6;}
+.user-chips{display:flex;flex-direction:column;gap:7px;margin-bottom:20px;}
+.user-chip{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:10px;}
+.user-chip:hover{border-color:var(--accent);transform:translateX(2px);}
+.user-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;flex-shrink:0;}
+.user-info{flex:1;text-align:left;}
+.user-name{font-weight:800;font-size:13px;}
+.user-stats{font-size:11px;color:var(--ink2);font-weight:600;}
+.user-chip-del{background:none;border:none;color:var(--ink2);cursor:pointer;font-size:14px;padding:2px 5px;border-radius:5px;opacity:.5;transition:opacity .15s;}
+.user-chip-del:hover{opacity:1;color:var(--red);}
+.login-divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--ink2);font-size:12px;font-weight:700;}
+.login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* HEADER USER */
+.header-user{display:flex;align-items:center;gap:9px;}
+.header-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;flex-shrink:0;}
+.header-username{font-size:12px;font-weight:800;color:#fff;max-width:90px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.header-logout{background:rgba(255,255,255,.12);color:rgba(255,255,255,.75);border:1.5px solid rgba(255,255,255,.2);border-radius:7px;padding:4px 10px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;cursor:pointer;transition:all .18s;}
+.header-logout:hover{background:rgba(255,255,255,.22);color:#fff;}
+
+/* PAYWALL */
+.paywall-card{background:linear-gradient(135deg,#fffdf8 0%,#fff9ee 100%);border:2px solid rgba(208,136,0,.4);border-radius:18px;padding:32px 28px;text-align:center;box-shadow:0 8px 32px rgba(208,136,0,.15);margin-bottom:20px;}
+.paywall-emoji{font-size:48px;margin-bottom:12px;}
+.paywall-title{font-family:'DM Serif Display',serif;font-size:24px;margin-bottom:8px;color:var(--amber);}
+.paywall-sub{font-size:13px;color:var(--ink2);font-weight:600;line-height:1.7;margin-bottom:20px;max-width:380px;margin-left:auto;margin-right:auto;}
+.paywall-price{font-size:32px;font-weight:900;color:var(--ink);margin-bottom:4px;}
+.paywall-price-sub{font-size:11px;color:var(--ink2);font-weight:700;margin-bottom:20px;}
+.paywall-features{text-align:left;background:var(--bg);border-radius:12px;padding:16px 18px;margin-bottom:20px;}
+.paywall-feature{font-size:13px;font-weight:700;color:var(--ink2);padding:4px 0;display:flex;align-items:center;gap:9px;}
+.paywall-feature::before{content:'✓';color:var(--green);font-weight:900;}
+
+/* LOADING */
+.loading-wrap{display:flex;align-items:center;justify-content:center;min-height:200px;flex-direction:column;gap:12px;}
+.loading-spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:13px;font-weight:700;color:var(--ink2);}
+
+/* SETUP BANNER */
+.setup-banner{background:rgba(20,96,176,.07);border:1.5px solid rgba(20,96,176,.25);border-radius:12px;padding:14px 16px;margin-bottom:20px;font-size:12.5px;font-weight:600;color:var(--accent2);line-height:1.7;}
+.setup-banner strong{color:var(--ink);}
+.setup-banner code{background:rgba(20,96,176,.1);padding:1px 6px;border-radius:4px;font-family:monospace;font-size:11px;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">SG <em>Study</em> Quiz</div>
+  <div class="header-user" id="header-user" style="display:none">
+    <div class="header-avatar" id="header-avatar"></div>
+    <span class="header-username" id="header-username"></span>
+    <button class="header-logout" onclick="logout()">Switch</button>
+  </div>
+  <div id="header-moe" style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.8px;">MOE P3–P4</div>
+</header>
+
+<!-- LOGIN SCREEN -->
+<div id="s-login">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-logo">SG <em>Study</em> Quiz</div>
+      <div class="login-subtitle">MOE-aligned P3–P4 practice<br>Who is studying today?</div>
+      <div id="existing-chips"></div>
+      <div id="new-user-form">
+        <div class="login-field">
+          <label>Your name</label>
+          <input class="login-input" id="login-name" type="text" placeholder="e.g. Mei Ling" maxlength="24">
+        </div>
+        <div class="login-err" id="login-err"></div>
+        <button class="login-btn" onclick="doLogin()">Start Practising →</button>
+      </div>
+      <div class="login-note">Progress is saved on this device. No account required.</div>
+    </div>
+  </div>
+</div>
+
+<div class="app" id="app-shell" style="display:none">
+
+<!-- SCREEN 1: HOME -->
+<div class="screen active" id="s-home">
+  <div class="home-layout">
+    <div>
+      <div class="hero-title">Practice <em>Singapore</em><br>Primary School</div>
+      <div class="hero-sub">MOE-aligned questions for P3 and P4 across Mathematics, English Language and Science.</div>
+      <div class="moe-tag">📘 MOE Primary Syllabus · P3 Free · P4 Premium</div>
+
+      <div id="data-status"></div>
+
+      <div class="slabel">Choose your level</div>
+      <div class="sel-grid col2" id="level-grid">
+        <div class="sel-card" style="--tc:#c94b0a" onclick="pickLevel('P3')">
+          <div class="sel-icon">📘</div>
+          <div class="sel-title">Primary 3</div>
+          <div class="sel-sub">Multiplication · Tenses · Food Chains · Water Cycle</div>
+        </div>
+        <div class="sel-card" style="--tc:#d08800" id="p4-card" onclick="pickLevel('P4')">
+          <div class="lock-badge" id="p4-lock">🔒</div>
+          <div class="sel-icon">🎓</div>
+          <div class="sel-title">Primary 4</div>
+          <div class="sel-sub">Decimals · Angles · Digestion · Electricity</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ERROR BANK SIDEBAR -->
+    <div class="eb-sidebar" id="eb-sidebar">
+      <div class="eb-sidebar-header">
+        <div class="eb-sidebar-title">📚 Error Bank <span class="eb-count-chip" id="eb-chip">0</span></div>
+      </div>
+      <div id="eb-sidebar-body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 2: SUBJECT -->
+<div class="screen" id="s-subject">
+  <div class="back-link" onclick="showScreen('s-home')">← Home</div>
+  <div class="slabel" id="subject-label">Choose Subject</div>
+  <div class="sel-grid col3" id="subject-grid"></div>
+</div>
+
+<!-- SCREEN 3: DIFFICULTY -->
+<div class="screen" id="s-diff">
+  <div class="back-link" onclick="showScreen('s-subject')">← Subject</div>
+  <div class="slabel">Difficulty</div>
+  <div class="sel-grid col3">
+    <div class="sel-card" style="--tc:#0e5c38" onclick="pickDiff('easy')">
+      <div class="sel-badge" style="background:#0e5c38">G1</div>
+      <div class="sel-icon">🌱</div>
+      <div class="sel-title">Foundation</div>
+      <div class="sel-sub">Core concepts, direct recall</div>
+    </div>
+    <div class="sel-card" style="--tc:#7a5500" onclick="pickDiff('medium')">
+      <div class="sel-badge" style="background:#7a5500">G2</div>
+      <div class="sel-icon">📘</div>
+      <div class="sel-title">Standard</div>
+      <div class="sel-sub">Application, moderate challenge</div>
+    </div>
+    <div class="sel-card" style="--tc:#7a0f0f" onclick="pickDiff('hard')">
+      <div class="sel-badge" style="background:#7a0f0f">G3</div>
+      <div class="sel-icon">🔥</div>
+      <div class="sel-title">Advanced</div>
+      <div class="sel-sub">Complex problems, exam standard</div>
+    </div>
+    <div class="sel-card" style="--tc:#6a5c4f;grid-column:1/-1" onclick="pickDiff('all')">
+      <div class="sel-icon">🎲</div>
+      <div class="sel-title">Mixed — All Difficulties</div>
+      <div class="sel-sub">Random mix of easy, medium and hard questions</div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 4: TOPICS -->
+<div class="screen" id="s-topics">
+  <div class="back-link" onclick="showScreen('s-diff')">← Difficulty</div>
+  <div style="display:flex;align-items:center;gap:9px;margin-bottom:5px;flex-wrap:wrap;">
+    <div class="slabel" style="margin:0">Choose Topics</div>
+    <span id="ctx-tag" style="font-size:10px;font-weight:800;padding:3px 9px;border-radius:6px;color:#fff;background:var(--tc,#888);text-transform:uppercase;"></span>
+  </div>
+  <div class="hero-sub" id="topics-sub" style="margin-bottom:16px;"></div>
+  <div class="topics-grid" id="topics-grid"></div>
+  <div class="slabel">Number of Questions</div>
+  <div class="count-row">
+    <button class="btn-cnt active" onclick="setCount(10,this)">10</button>
+    <button class="btn-cnt" onclick="setCount(20,this)">20</button>
+    <button class="btn-cnt" onclick="setCount(30,this)">30</button>
+  </div>
+  <div class="action-row">
+    <button class="btn-primary" onclick="startQuiz(false)">Start Quiz →</button>
+    <button class="btn-secondary" onclick="selectAll()">Select All</button>
+    <span style="font-size:12px;font-weight:600;color:var(--ink2);" id="sel-label">0 topics selected</span>
+  </div>
+</div>
+
+<!-- SCREEN 5: QUIZ -->
+<div class="screen" id="s-quiz">
+  <div class="quiz-topbar">
+    <div class="prog-wrap">
+      <span class="prog-info" id="q-counter">Q 1 / 10</span>
+      <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;">
+      <span class="quiz-mode-tag normal" id="quiz-mode-tag">Quiz</span>
+      <span class="topic-pill" id="q-pill">Topic</span>
+      <span class="score-badge" id="live-score">0/0</span>
+    </div>
+  </div>
+  <div class="question-card">
+    <div class="q-num-lbl" id="q-num-lbl">Question 1</div>
+    <div class="q-text" id="q-text"></div>
+    <div id="q-body"></div>
+    <div class="feedback-box" id="feedback"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-ghost" onclick="confirmQuit()">✕ Quit</button>
+    <button class="btn-next" id="btn-next" onclick="nextQuestion()">Next →</button>
+  </div>
+</div>
+
+<!-- SCREEN 6: RESULTS -->
+<div class="screen" id="s-results">
+  <div class="results-card">
+    <div class="result-emoji" id="res-emoji">🎉</div>
+    <div class="result-title" id="res-title">Quiz Complete!</div>
+    <div class="result-score" id="res-score">8</div>
+    <div class="result-total" id="res-total">out of 10 correct</div>
+    <div class="result-msg" id="res-msg"></div>
+    <div class="stat-row">
+      <div class="stat-box"><div class="stat-num" id="st-c" style="color:var(--green)">0</div><div class="stat-lbl">Correct</div></div>
+      <div class="stat-box"><div class="stat-num" id="st-w" style="color:var(--red)">0</div><div class="stat-lbl">Wrong</div></div>
+      <div class="stat-box"><div class="stat-num" id="st-p" style="color:var(--accent)">0%</div><div class="stat-lbl">Score</div></div>
+    </div>
+    <div id="eb-res-note"></div>
+    <div class="results-actions">
+      <button class="btn-primary" onclick="retryQuiz()">Retry</button>
+      <button class="btn-green" onclick="goHomeEB()" id="res-practice-eb-btn" style="display:none">📚 Practice Errors</button>
+      <button class="btn-secondary" onclick="showScreen('s-topics')">← Topics</button>
+      <button class="btn-secondary" onclick="showScreen('s-home')">🏠 Home</button>
+    </div>
+  </div>
+  <div class="review-section">
+    <div class="review-title">Question Review</div>
+    <div id="review-list"></div>
+  </div>
+</div>
+
+<!-- SCREEN 7: PAYWALL -->
+<div class="screen" id="s-paywall">
+  <div class="back-link" onclick="showScreen('s-home')">← Home</div>
+  <div class="paywall-card">
+    <div class="paywall-emoji">🔓</div>
+    <div class="paywall-title">Unlock P4 Questions</div>
+    <div class="paywall-sub">P4 covers Decimals, Angles, Symmetry, Factors & Multiples, Digestion, Electricity, and more — all MOE-aligned.</div>
+    <div class="paywall-price">SGD $4.99<span style="font-size:16px;font-weight:600">/mo</span></div>
+    <div class="paywall-price-sub">Cancel anytime · Instant access</div>
+    <div class="paywall-features">
+      <div class="paywall-feature">Full P4 bank: 86 Maths · 77 English · 84 Science</div>
+      <div class="paywall-feature">Unlimited daily practice</div>
+      <div class="paywall-feature">Advanced topic breakdowns</div>
+      <div class="paywall-feature">Full error bank analysis</div>
+    </div>
+    <button class="btn-amber" onclick="goSubscribe()" style="width:100%;padding:14px;font-size:15px;">Upgrade Now →</button>
+    <div style="margin-top:10px">
+      <button class="btn-ghost" onclick="activatePremium()">I have a code / already subscribed</button>
+    </div>
+  </div>
+  <p style="font-size:11px;color:var(--ink2);text-align:center;font-weight:600;margin-top:8px;">P1–P3 practice always free · No credit card to start</p>
+</div>
+
+</div><!-- /app-shell -->
+<div class="confetti" id="confetti"></div>
+<script>
+// ═══════════════════════════════════════════════════
+//  CONFIG — paste your Google Sheet CSV URL here
+// ═══════════════════════════════════════════════════
+const CONFIG = {
+  // Publish your Google Sheet: File → Share → Publish to web → CSV
+  // Paste the URL here. Leave empty to use embedded sample questions.
+  sheetCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vThfIBnRDecZLdPzi0yPQU4R74XyvXWt7_WGPaKtNK0oP_Y9BKasDv_MC_YWehjP0sGfp5wtJeOocaF/pubhtml',
+  stripeUrl: 'https://buy.stripe.com/your-link-here', // replace with your Stripe link
+  premiumCode: 'SGQUIZ2024' // simple unlock code
+};
+
+// ═══════════════════════════════════════════════════
+//  TOPIC METADATA
+// ═══════════════════════════════════════════════════
+const SUBJECT_META = {
+  'Mathematics':     {icon:'🔢', color:'#1460b0', cls:'subj-math'},
+  'English Language':{icon:'📖', color:'#c94b0a', cls:'subj-english'},
+  'Science':         {icon:'🔬', color:'#0e8a7a', cls:'subj-science'},
+};
+
+// ═══════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════
+let allQuestions = []; // loaded from CSV or embedded
+let state = {
+  user: null,
+  level: null,
+  subject: null,
+  diff: null,
+  selectedTopics: [],
+  questionCount: 10,
+  quizQuestions: [],
+  currentIndex: 0,
+  score: 0,
+  answers: [],
+  isErrorBankMode: false
+};
+
+// ═══════════════════════════════════════════════════
+//  STORAGE HELPERS
+// ═══════════════════════════════════════════════════
+function getUsers(){ try{ return JSON.parse(localStorage.getItem('sgq_users')||'{}'); }catch(e){return {};} }
+function saveUsers(u){ localStorage.setItem('sgq_users',JSON.stringify(u)); }
+function getEB(user){ try{ return JSON.parse(localStorage.getItem('sgq_eb_'+user)||'{}'); }catch(e){return {};} }
+function saveEB(user,eb){ localStorage.setItem('sgq_eb_'+user,JSON.stringify(eb)); }
+function getSession(){ return localStorage.getItem('sgq_session'); }
+function setSession(u){ localStorage.setItem('sgq_session',u); }
+function clearSession(){ localStorage.removeItem('sgq_session'); }
+function isPremium(user){
+  const u = getUsers()[user];
+  return u && u.premium === true;
+}
+
+// ═══════════════════════════════════════════════════
+//  CSV PARSER
+// ═══════════════════════════════════════════════════
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = parseCSVRow(lines[0]);
+  const rows = [];
+  for (let i = 1; i < lines.length; i++) {
+    if (!lines[i].trim()) continue;
+    const vals = parseCSVRow(lines[i]);
+    const obj = {};
+    headers.forEach((h, idx) => { obj[h.trim()] = (vals[idx] || '').trim(); });
+    rows.push(obj);
+  }
+  return rows;
+}
+
+function parseCSVRow(line) {
+  const result = [];
+  let inQuote = false, cur = '';
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') { inQuote = !inQuote; }
+    else if (c === ',' && !inQuote) { result.push(cur); cur = ''; }
+    else { cur += c; }
+  }
+  result.push(cur);
+  return result;
+}
+
+// ═══════════════════════════════════════════════════
+//  DATA LOADING
+// ═══════════════════════════════════════════════════
+async function loadData() {
+  const statusEl = document.getElementById('data-status');
+  if (CONFIG.sheetCsvUrl) {
+    statusEl.innerHTML = '<div class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">Loading questions…</div></div>';
+    try {
+      const res = await fetch(CONFIG.sheetCsvUrl);
+      const text = await res.text();
+      allQuestions = parseCSV(text);
+      statusEl.innerHTML = '';
+      console.log('Loaded', allQuestions.length, 'questions from sheet');
+    } catch(e) {
+      console.warn('Sheet fetch failed, using embedded questions', e);
+      allQuestions = EMBEDDED_QUESTIONS;
+      statusEl.innerHTML = '<div class="setup-banner">⚠️ Could not load from Google Sheet. Using <strong>sample questions</strong>. <a href="#" onclick="showSetupHelp()" style="color:var(--accent2)">How to connect your sheet →</a></div>';
+    }
+  } else {
+    allQuestions = EMBEDDED_QUESTIONS;
+    if (EMBEDDED_QUESTIONS.length < 50) {
+      statusEl.innerHTML = '<div class="setup-banner">📋 Using sample questions. To use your full question bank: <strong>1.</strong> Open your Google Sheet → File → Share → Publish to web → CSV → copy the URL. <strong>2.</strong> Open this HTML file in a text editor and paste the URL in <code>CONFIG.sheetCsvUrl</code>.</div>';
+    } else {
+      statusEl.innerHTML = '';
+    }
+  }
+}
+
+function getTopicsForSelection() {
+  const qs = allQuestions.filter(q =>
+    q.level === state.level &&
+    q.subject === state.subject &&
+    (state.diff === 'all' || q.difficulty === state.diff)
+  );
+  const topicMap = {};
+  qs.forEach(q => {
+    if (!topicMap[q.topic]) topicMap[q.topic] = 0;
+    topicMap[q.topic]++;
+  });
+  return topicMap;
+}
+
+function getQuestionsForQuiz() {
+  let pool = allQuestions.filter(q =>
+    q.level === state.level &&
+    q.subject === state.subject &&
+    (state.diff === 'all' || q.difficulty === state.diff) &&
+    state.selectedTopics.includes(q.topic)
+  );
+  shuffle(pool);
+  return pool.slice(0, state.questionCount);
+}
+
+// ═══════════════════════════════════════════════════
+//  LOGIN
+// ═══════════════════════════════════════════════════
+const AVATAR_COLORS = ['#c94b0a','#1460b0','#0e8a7a','#7b35c4','#1a9456','#d08800','#c42b2b'];
+
+function renderLoginChips() {
+  const users = getUsers();
+  const names = Object.keys(users);
+  const container = document.getElementById('existing-chips');
+  const form = document.getElementById('new-user-form');
+  if (names.length === 0) {
+    container.innerHTML = '';
+    form.style.display = 'block';
+    return;
+  }
+  let html = '<div class="user-chips">';
+  names.forEach((name, i) => {
+    const u = users[name];
+    const col = AVATAR_COLORS[i % AVATAR_COLORS.length];
+    const prem = u.premium ? ' 🌟' : '';
+    html += `<div class="user-chip" onclick="enterApp('${name}')">
+      <div class="user-avatar" style="background:${col}">${name[0].toUpperCase()}</div>
+      <div class="user-info">
+        <div class="user-name">${name}${prem}</div>
+        <div class="user-stats">${u.quizCount||0} quizzes · ${u.totalCorrect||0} correct</div>
+      </div>
+      <button class="user-chip-del" onclick="deleteUser(event,'${name}')">✕</button>
+      <span style="font-size:18px">→</span>
+    </div>`;
+  });
+  html += '</div>';
+  html += '<div class="login-divider">or add new user</div>';
+  container.innerHTML = html;
+  form.style.display = 'block';
+}
+
+function deleteUser(e, name) {
+  e.stopPropagation();
+  if (!confirm(`Remove ${name}?`)) return;
+  const users = getUsers();
+  delete users[name];
+  saveUsers(users);
+  if (getSession() === name) clearSession();
+  renderLoginChips();
+}
+
+function doLogin() {
+  const name = document.getElementById('login-name').value.trim();
+  const err = document.getElementById('login-err');
+  if (!name) { err.textContent = 'Please enter your name.'; return; }
+  if (name.length < 2) { err.textContent = 'Name must be at least 2 characters.'; return; }
+  err.textContent = '';
+  const users = getUsers();
+  if (!users[name]) users[name] = {quizCount:0, totalCorrect:0, premium:false};
+  saveUsers(users);
+  enterApp(name);
+}
+
+function enterApp(name) {
+  state.user = name;
+  setSession(name);
+  document.getElementById('s-login').style.display = 'none';
+  document.getElementById('app-shell').style.display = 'block';
+  document.getElementById('header-user').style.display = 'flex';
+  document.getElementById('header-username').textContent = name;
+  const users = getUsers();
+  const i = Object.keys(users).indexOf(name) % AVATAR_COLORS.length;
+  document.getElementById('header-avatar').style.background = AVATAR_COLORS[Math.max(0,i)];
+  document.getElementById('header-avatar').textContent = name[0].toUpperCase();
+  // Update P4 lock
+  updateP4Lock();
+  renderEB();
+}
+
+function updateP4Lock() {
+  const lockEl = document.getElementById('p4-lock');
+  const card = document.getElementById('p4-card');
+  if (isPremium(state.user)) {
+    if (lockEl) lockEl.style.display = 'none';
+    if (card) card.style.opacity = '1';
+  }
+}
+
+function logout() {
+  clearSession();
+  state.user = null;
+  document.getElementById('s-login').style.display = 'block';
+  document.getElementById('app-shell').style.display = 'none';
+  document.getElementById('header-user').style.display = 'none';
+  renderLoginChips();
+}
+
+// ═══════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function pickLevel(level) {
+  if (level === 'P4' && !isPremium(state.user)) {
+    showScreen('s-paywall');
+    return;
+  }
+  state.level = level;
+  // Build subject grid
+  const subjects = [...new Set(allQuestions.filter(q => q.level === level).map(q => q.subject))].sort();
+  const grid = document.getElementById('subject-grid');
+  document.getElementById('subject-label').textContent = `${level} — Choose Subject`;
+  grid.innerHTML = '';
+  subjects.forEach(subj => {
+    const meta = SUBJECT_META[subj] || {icon:'📚', color:'#888', cls:''};
+    const count = allQuestions.filter(q => q.level === level && q.subject === subj).length;
+    grid.innerHTML += `<div class="sel-card ${meta.cls}" style="--tc:${meta.color}" onclick="pickSubject('${subj}')">
+      <div class="sel-icon">${meta.icon}</div>
+      <div class="sel-title">${subj}</div>
+      <div class="sel-sub">${count} questions</div>
+    </div>`;
+  });
+  showScreen('s-subject');
+}
+
+function pickSubject(subj) {
+  state.subject = subj;
+  showScreen('s-diff');
+}
+
+function pickDiff(diff) {
+  state.diff = diff;
+  state.selectedTopics = [];
+  renderTopics();
+  showScreen('s-topics');
+}
+
+function renderTopics() {
+  const topicMap = getTopicsForSelection();
+  const topics = Object.keys(topicMap).sort();
+  const meta = SUBJECT_META[state.subject] || {color:'#888'};
+  const grid = document.getElementById('topics-grid');
+  const diffLabel = {easy:'Foundation',medium:'Standard',hard:'Advanced',all:'All Levels'}[state.diff];
+  document.getElementById('ctx-tag').textContent = `${state.level} · ${state.subject} · ${diffLabel}`;
+  document.getElementById('ctx-tag').style.background = meta.color;
+  document.getElementById('ctx-tag').style['--tc'] = meta.color;
+  document.getElementById('topics-sub').textContent = `${topics.length} topics available. Select the ones you want to practise.`;
+  grid.innerHTML = '';
+  const TOPIC_ICONS = {
+    'Addition':'➕','Subtraction':'➖','Multiplication':'✖️','Division':'➗','Fractions':'½','Decimals':'💯',
+    'Whole Numbers':'🔢','Money':'💰','Time':'⏰','Length':'📏','Mass':'⚖️','Area':'📐','Perimeter':'📐',
+    'Multiplication Tables':'✖️','Bar Graphs':'📊','Shapes':'🔷','2D Shapes':'🔷','3D Shapes':'🎲',
+    'Picture Graphs':'📊','Ordinal Numbers':'🔢','Angles':'📐','Symmetry':'🪞','Factors and Multiples':'🔢',
+    'Tables and Graphs':'📊','Area and Perimeter':'📐',
+    'Grammar':'✏️','Phonics':'🔤','Spelling':'🔡','Vocabulary':'📖','Punctuation':'❗',
+    'Tenses':'⏳','Comprehension':'📝','Conjunctions':'🔗','Adjectives':'🎨','Pronouns':'👤',
+    'Simple Comprehension':'📝','Rhyming Words':'🎵','Capitalization':'🔠','Question Words':'❓',
+    'Subject-Verb Agreement':'✍️','Active and Passive':'🔄','Direct and Indirect Speech':'💬',
+    'Synthesis and Transformation':'🔄','Ordinal Numbers':'🔢',
+    'Living and Non-Living Things':'🌿','Animals':'🐾','Plants':'🌱','Senses':'👁️',
+    'Materials':'🧱','Sky and Weather':'⛅','Human Body Parts':'🫀',
+    'Life Cycles':'🔄','Plant Reproduction':'🌸','Food Chains':'🍃','Water Cycle':'💧',
+    'Magnets':'🧲','Diversity of Living Things':'🌍','Materials and Properties':'🧪',
+    'Light and Shadow':'💡','Digestion':'🫀','Respiratory System':'🫁','Circulatory System':'❤️',
+    'Matter':'⚗️','Heat':'🔥','Electricity':'⚡','Environment':'🌍',
+  };
+  topics.forEach(topic => {
+    const icon = TOPIC_ICONS[topic] || '📌';
+    const count = topicMap[topic];
+    grid.innerHTML += `<div class="topic-card" style="--tc:${meta.color}" onclick="toggleTopic('${topic}',this)">
+      <div class="tc-count">${count}q</div>
+      <div class="tc-icon">${icon}</div>
+      <div class="tc-name">${topic}</div>
+    </div>`;
+  });
+  updateSelLabel();
+}
+
+function toggleTopic(topic, el) {
+  const idx = state.selectedTopics.indexOf(topic);
+  if (idx >= 0) { state.selectedTopics.splice(idx,1); el.classList.remove('selected'); }
+  else { state.selectedTopics.push(topic); el.classList.add('selected'); }
+  updateSelLabel();
+}
+
+function updateSelLabel() {
+  document.getElementById('sel-label').textContent = `${state.selectedTopics.length} topic${state.selectedTopics.length!==1?'s':''} selected`;
+  document.querySelector('#s-topics .btn-primary').disabled = state.selectedTopics.length === 0;
+}
+
+function selectAll() {
+  const cards = document.querySelectorAll('#topics-grid .topic-card');
+  const topicMap = getTopicsForSelection();
+  state.selectedTopics = Object.keys(topicMap);
+  cards.forEach(c => c.classList.add('selected'));
+  updateSelLabel();
+}
+
+function setCount(n, btn) {
+  state.questionCount = n;
+  document.querySelectorAll('.btn-cnt').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════
+//  QUIZ
+// ═══════════════════════════════════════════════════
+function startQuiz(ebMode) {
+  state.isErrorBankMode = ebMode;
+  if (ebMode) {
+    const eb = getEB(state.user);
+    const keys = Object.keys(eb).filter(k => !eb[k].mastered);
+    if (keys.length === 0) { alert('No errors to practise! Keep doing quizzes to build your Error Bank.'); return; }
+    state.quizQuestions = keys.map(k => {
+      const item = eb[k];
+      // Reconstruct question from allQuestions
+      const found = allQuestions.find(q =>
+        q.question === item.question && q.subject === item.subject
+      );
+      return found || null;
+    }).filter(Boolean);
+    shuffle(state.quizQuestions);
+    state.quizQuestions = state.quizQuestions.slice(0, state.questionCount || 10);
+  } else {
+    if (state.selectedTopics.length === 0) { alert('Please select at least one topic.'); return; }
+    state.quizQuestions = getQuestionsForQuiz();
+    if (state.quizQuestions.length === 0) {
+      alert('No questions found for your selection. Try selecting different topics or difficulty.');
+      return;
+    }
+  }
+  state.currentIndex = 0;
+  state.score = 0;
+  state.answers = [];
+  showScreen('s-quiz');
+  document.getElementById('quiz-mode-tag').textContent = ebMode ? '📚 Error Bank' : 'Quiz';
+  document.getElementById('quiz-mode-tag').className = 'quiz-mode-tag ' + (ebMode ? 'errorbank' : 'normal');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = state.quizQuestions[state.currentIndex];
+  const tot = state.quizQuestions.length;
+  const pct = Math.round((state.currentIndex / tot) * 100);
+  document.getElementById('q-counter').textContent = `Q ${state.currentIndex+1} / ${tot}`;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('q-num-lbl').textContent = `Question ${state.currentIndex+1}`;
+  document.getElementById('q-text').textContent = q.question;
+  document.getElementById('live-score').textContent = `${state.score}/${state.currentIndex}`;
+  const meta = SUBJECT_META[q.subject] || {color:'#888'};
+  document.getElementById('q-pill').textContent = q.topic;
+  document.getElementById('q-pill').style.background = meta.color;
+  document.getElementById('feedback').className = 'feedback-box';
+  document.getElementById('feedback').innerHTML = '';
+  document.getElementById('btn-next').className = 'btn-next';
+
+  // Build options grid
+  const opts = [q.option_a, q.option_b, q.option_c, q.option_d];
+  const correctIdx = ['A','B','C','D'].indexOf(q.correct_answer.trim().toUpperCase());
+  const body = document.getElementById('q-body');
+  body.innerHTML = '';
+  const grid = document.createElement('div');
+  grid.className = 'options-grid';
+  opts.forEach((opt, i) => {
+    if (!opt) return;
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="opt-letter">${'ABCD'[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectOption(i, correctIdx, grid, q);
+    grid.appendChild(btn);
+  });
+  body.appendChild(grid);
+}
+
+function selectOption(idx, correctIdx, grid, q) {
+  const btns = grid.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+  const ok = idx === correctIdx;
+  btns[idx].classList.add(ok ? 'correct' : 'wrong');
+  if (!ok && correctIdx < btns.length) btns[correctIdx].classList.add('correct');
+  const correctText = btns[correctIdx].querySelector('span:last-child').textContent;
+  showFeedback(ok, q.explanation, ok ? null : correctText);
+  recordAnswer(ok, q);
+}
+
+function showFeedback(ok, exp, ca) {
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback-box show ' + (ok ? 'correct' : 'wrong');
+  let h = `<strong>${ok ? '✅ Correct! Well done!' : '❌ Incorrect.'}</strong>`;
+  if (!ok && ca) h += ` Correct answer: <strong>${ca}</strong>.`;
+  h += `<div class="explanation">💡 ${exp}</div>`;
+  fb.innerHTML = h;
+  const btn = document.getElementById('btn-next');
+  btn.textContent = state.currentIndex < state.quizQuestions.length - 1 ? 'Next Question →' : 'See Results →';
+  btn.className = 'btn-next show';
+}
+
+function recordAnswer(ok, q) {
+  if (ok) {
+    state.score++;
+    if (state.isErrorBankMode) {
+      const eb = getEB(state.user);
+      const k = q.question.slice(0,60) + q.subject;
+      if (eb[k]) { eb[k].mastered = true; saveEB(state.user, eb); }
+    }
+  } else {
+    addToEB(q);
+  }
+  state.answers.push({q, ok});
+}
+
+function addToEB(q) {
+  const eb = getEB(state.user);
+  const k = q.question.slice(0,60) + q.subject;
+  if (!eb[k]) {
+    eb[k] = {
+      question: q.question,
+      subject: q.subject,
+      level: q.level,
+      topic: q.topic,
+      correct_answer: q.correct_answer,
+      explanation: q.explanation,
+      option_a: q.option_a, option_b: q.option_b,
+      option_c: q.option_c, option_d: q.option_d,
+      mastered: false,
+      addedAt: Date.now()
+    };
+  }
+  saveEB(state.user, eb);
+  renderEB();
+}
+
+function nextQuestion() {
+  state.currentIndex++;
+  if (state.currentIndex >= state.quizQuestions.length) { showResults(); return; }
+  renderQuestion();
+}
+
+function confirmQuit() {
+  if (confirm('Quit quiz? Your wrong answers will be saved to the Error Bank.')) showScreen('s-home');
+}
+
+// ═══════════════════════════════════════════════════
+//  RESULTS
+// ═══════════════════════════════════════════════════
+function showResults() {
+  showScreen('s-results');
+  const tot = state.quizQuestions.length;
+  const pct = Math.round((state.score / tot) * 100);
+  document.getElementById('res-score').textContent = state.score;
+  document.getElementById('res-total').textContent = `out of ${tot} correct`;
+  document.getElementById('st-c').textContent = state.score;
+  document.getElementById('st-w').textContent = tot - state.score;
+  document.getElementById('st-p').textContent = pct + '%';
+  let emoji, title, msg;
+  if (pct >= 90){ emoji='🏆'; title='Outstanding!'; msg="Excellent work — you've mastered these topics!"; confettiShow(); }
+  else if (pct >= 70){ emoji='🎉'; title='Great Job!'; msg="Well done! Review the incorrect questions and try again."; }
+  else if (pct >= 50){ emoji='📚'; title='Good Effort!'; msg="You're getting there — focus on the topics in your Error Bank."; }
+  else { emoji='💪'; title='Keep Practising!'; msg="Read the explanations carefully, then use Error Bank to practise your mistakes."; }
+  document.getElementById('res-emoji').textContent = emoji;
+  document.getElementById('res-title').textContent = title;
+  document.getElementById('res-msg').textContent = msg;
+  const wrongCount = state.answers.filter(a => !a.ok).length;
+  document.getElementById('eb-res-note').innerHTML = wrongCount > 0
+    ? `<div class="eb-saved-note">📚 ${wrongCount} incorrect question${wrongCount>1?'s':''} saved to your Error Bank.</div>` : '';
+  document.getElementById('res-practice-eb-btn').style.display = wrongCount > 0 ? 'inline-flex' : 'none';
+
+  // Update user stats
+  const users = getUsers();
+  if (users[state.user]) {
+    users[state.user].quizCount = (users[state.user].quizCount || 0) + 1;
+    users[state.user].totalCorrect = (users[state.user].totalCorrect || 0) + state.score;
+    saveUsers(users);
+  }
+
+  // Review list
+  const list = document.getElementById('review-list');
+  list.innerHTML = '';
+  state.answers.forEach((a, i) => {
+    const item = document.createElement('div');
+    item.className = 'review-item ' + (a.ok ? 'ri-correct' : 'ri-wrong');
+    const meta = SUBJECT_META[a.q.subject] || {};
+    const opts = [a.q.option_a, a.q.option_b, a.q.option_c, a.q.option_d];
+    const cidx = ['A','B','C','D'].indexOf(a.q.correct_answer.trim().toUpperCase());
+    const correctText = opts[cidx] || a.q.correct_answer;
+    const ansLine = a.ok
+      ? `<span class="ri-ans">✅ Correct</span>`
+      : `<span class="ri-ans">❌ Correct answer: <span class="ca">${correctText}</span></span>`;
+    item.innerHTML = `<div class="ri-q"><strong>Q${i+1}</strong> [${a.q.topic}]: ${a.q.question}</div>${ansLine}<div class="ri-exp">💡 ${a.q.explanation}</div>`;
+    list.appendChild(item);
+  });
+  renderEB();
+}
+
+function goHomeEB() { showScreen('s-home'); setTimeout(() => practiceEB(), 300); }
+function retryQuiz() {
+  state.currentIndex = 0; state.score = 0; state.answers = [];
+  shuffle(state.quizQuestions);
+  showScreen('s-quiz'); renderQuestion();
+}
+
+// ═══════════════════════════════════════════════════
+//  ERROR BANK
+// ═══════════════════════════════════════════════════
+function renderEB() {
+  const eb = getEB(state.user);
+  const keys = Object.keys(eb);
+  const unresolved = keys.filter(k => !eb[k].mastered);
+  const mastered = keys.filter(k => eb[k].mastered);
+  document.getElementById('eb-chip').textContent = unresolved.length;
+
+  const body = document.getElementById('eb-sidebar-body');
+  if (keys.length === 0) {
+    body.innerHTML = `<div class="eb-empty-mini">
+      <div class="eb-empty-mini-icon">✨</div>
+      <div class="eb-empty-mini-text">Error Bank is empty</div>
+      <div class="eb-empty-mini-sub">Wrong answers will appear here for targeted review.</div>
+    </div>`;
+    return;
+  }
+
+  const stats = `<div class="eb-mini-stats">
+    <div class="eb-mini-stat"><div class="eb-mini-stat-num" style="color:var(--red)">${unresolved.length}</div><div class="eb-mini-stat-lbl">To review</div></div>
+    <div class="eb-mini-stat"><div class="eb-mini-stat-num" style="color:var(--green)">${mastered.length}</div><div class="eb-mini-stat-lbl">Mastered</div></div>
+    <div class="eb-mini-stat"><div class="eb-mini-stat-num">${keys.length}</div><div class="eb-mini-stat-lbl">Total</div></div>
+  </div>`;
+
+  let items = '<div class="eb-mini-list">';
+  unresolved.slice(0, 6).forEach(k => {
+    const item = eb[k];
+    items += `<div class="eb-mini-item">
+      <div class="eb-mini-item-topic">${item.level} · ${item.subject} · ${item.topic}</div>
+      <div class="eb-mini-item-q">${item.question}</div>
+      <div class="eb-mini-item-ans">✓ ${['A','B','C','D'].indexOf(item.correct_answer.trim().toUpperCase()) >= 0 ?
+        [item.option_a,item.option_b,item.option_c,item.option_d][['A','B','C','D'].indexOf(item.correct_answer.trim().toUpperCase())] : item.correct_answer}</div>
+      <button class="eb-mini-remove" onclick="removeEB('${k.replace(/'/g,"\\'")}')">✕</button>
+    </div>`;
+  });
+  if (unresolved.length > 6) items += `<div style="font-size:11px;color:var(--ink2);text-align:center;padding:6px;font-weight:700;">+${unresolved.length-6} more…</div>`;
+  items += '</div>';
+
+  const actions = `<div class="eb-mini-actions">
+    <button class="btn-practice-eb" onclick="practiceEB()" ${unresolved.length===0?'disabled':''}>
+      📚 Practice ${unresolved.length} Error${unresolved.length!==1?'s':''}
+    </button>
+    <button class="btn-clear-eb" onclick="clearEB()">Clear All</button>
+  </div>`;
+
+  body.innerHTML = stats + items + actions;
+}
+
+function removeEB(k) {
+  const eb = getEB(state.user);
+  delete eb[k];
+  saveEB(state.user, eb);
+  renderEB();
+}
+
+function clearEB() {
+  if (!confirm('Clear all Error Bank items?')) return;
+  saveEB(state.user, {});
+  renderEB();
+}
+
+function practiceEB() {
+  state.questionCount = 10;
+  startQuiz(true);
+}
+
+// ═══════════════════════════════════════════════════
+//  PAYWALL / PREMIUM
+// ═══════════════════════════════════════════════════
+function goSubscribe() {
+  if (CONFIG.stripeUrl && CONFIG.stripeUrl !== 'https://buy.stripe.com/your-link-here') {
+    window.open(CONFIG.stripeUrl, '_blank');
+  } else {
+    alert('Stripe payment link not configured yet. Open this file in a text editor and set CONFIG.stripeUrl.');
+  }
+}
+
+function activatePremium() {
+  const code = prompt('Enter your access code:');
+  if (!code) return;
+  if (code.trim().toUpperCase() === CONFIG.premiumCode) {
+    const users = getUsers();
+    if (users[state.user]) { users[state.user].premium = true; saveUsers(users); }
+    updateP4Lock();
+    showScreen('s-home');
+    alert('🌟 Premium unlocked! P4 questions are now available.');
+  } else {
+    alert('Code not recognised. Please check your code and try again.');
+  }
+}
+
+function showSetupHelp() {
+  alert('To connect your Google Sheet:\n\n1. Open your Google Sheet\n2. Click File → Share → Publish to web\n3. Choose the Questions sheet, format = CSV\n4. Click Publish and copy the URL\n5. Open this HTML file in a text editor\n6. Find CONFIG.sheetCsvUrl near the top\n7. Paste the URL between the quotes\n8. Save and reopen in your browser');
+}
+
+// ═══════════════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════════════
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function confettiShow() {
+  const cols = ['#c94b0a','#1460b0','#1a9456','#d08800','#7b35c4'];
+  const c = document.getElementById('confetti'); c.innerHTML = '';
+  for (let i = 0; i < 70; i++) {
+    const d = document.createElement('div'); d.className = 'dot';
+    d.style.left = Math.random() * 100 + '%';
+    d.style.background = cols[Math.floor(Math.random() * 5)];
+    d.style.animationDelay = (Math.random() * 1.5) + 's';
+    d.style.animationDuration = (1.5 + Math.random()) + 's';
+    d.style.width = d.style.height = (5 + Math.random() * 8) + 'px';
+    c.appendChild(d);
+  }
+  setTimeout(() => c.innerHTML = '', 4500);
+}
+
+// ═══════════════════════════════════════════════════
+//  EMBEDDED SAMPLE QUESTIONS (used when no sheet URL)
+// ═══════════════════════════════════════════════════
+const EMBEDDED_QUESTIONS = [
+{"subject": "English Language", "level": "P3", "topic": "Tenses", "question": "By the time we arrived, the show ___.", "option_a": "had already started", "option_b": "has already started", "option_c": "already started", "option_d": "is already starting", "correct_answer": "A", "explanation": "Past perfect for event before another past event.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Vocabulary", "question": "She is interested ___ painting.", "option_a": "on", "option_b": "at", "option_c": "in", "option_d": "for", "correct_answer": "C", "explanation": "'Interested in'.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Pronouns", "question": "Correct pronoun use?", "option_a": "Him and I went.", "option_b": "He and I went.", "option_c": "Me and him went.", "option_d": "Him and me went.", "correct_answer": "B", "explanation": "'He and I' — both subject pronouns.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Grammar", "question": "The book, ___ was old, was still readable.", "option_a": "who", "option_b": "whom", "option_c": "which", "option_d": "what", "correct_answer": "C", "explanation": "'Which' for things.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Vocabulary", "question": "Synonym for 'generous'?", "option_a": "stingy", "option_b": "kind-hearted", "option_c": "selfish", "option_d": "rude", "correct_answer": "B", "explanation": "Kind-hearted.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Conjunctions", "question": "She was tired ___ she continued working.", "option_a": "and", "option_b": "but", "option_c": "so", "option_d": "or", "correct_answer": "B", "explanation": "'But' shows contrast.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Tenses", "question": "Passive voice sentence?", "option_a": "She cooked the rice.", "option_b": "The rice was cooked by her.", "option_c": "She is cooking.", "option_d": "She had cooked.", "correct_answer": "B", "explanation": "Passive: subject receives the action.", "difficulty": "hard", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Grammar", "question": "He practises ___ every day.", "option_a": "diligent", "option_b": "diligently", "option_c": "diligence", "option_d": "more diligent", "correct_answer": "B", "explanation": "'Diligently' — adverb.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Vocabulary", "question": "'Walk without a clear direction'?", "option_a": "march", "option_b": "stroll", "option_c": "wander", "option_d": "stomp", "correct_answer": "C", "explanation": "'Wander'.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Conjunctions", "question": "___ the weather was bad, they played outside.", "option_a": "Because", "option_b": "Although", "option_c": "Since", "option_d": "Unless", "correct_answer": "B", "explanation": "'Although' — contrast.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Punctuation", "question": "Commas used correctly in a list?", "option_a": "She bought apples, oranges and, bananas.", "option_b": "She bought apples, oranges, and bananas.", "option_c": "She bought, apples oranges, and bananas.", "option_d": "She bought apples oranges, and bananas.", "correct_answer": "B", "explanation": "Commas before 'and' in a list.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Grammar", "question": "He speaks English and Chinese ___.", "option_a": "fluent", "option_b": "more fluent", "option_c": "fluently", "option_d": "fluency", "correct_answer": "C", "explanation": "'Fluently' — adverb.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Tenses", "question": "Passive: 'The teacher marked the papers.'", "option_a": "Papers marked teacher.", "option_b": "Papers were marked by teacher.", "option_c": "Teacher was marking papers.", "option_d": "Papers have marked.", "correct_answer": "B", "explanation": "Passive: papers + were marked + by teacher.", "difficulty": "hard", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Tenses", "question": "She ___ the letter before she left.", "option_a": "send", "option_b": "sent", "option_c": "has sent", "option_d": "is sending", "correct_answer": "B", "explanation": "'Sent' — past tense.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Vocabulary", "question": "'Very surprised'?", "option_a": "bored", "option_b": "confused", "option_c": "astonished", "option_d": "worried", "correct_answer": "C", "explanation": "'Astonished'.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Subject-Verb Agreement", "question": "Neither boys nor teacher ___ aware.", "option_a": "are", "option_b": "were", "option_c": "was", "option_d": "have", "correct_answer": "C", "explanation": "Closest noun 'teacher' singular → 'was'.", "difficulty": "hard", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Conjunctions", "question": "'So...that' used correctly?", "option_a": "She was so tired so she fell.", "option_b": "She was so tired that she fell.", "option_c": "She was so tired she fell so.", "option_d": "She was that tired so she fell.", "correct_answer": "B", "explanation": "'So tired that' — result.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Grammar", "question": "The old man walked ___ up stairs.", "option_a": "slow", "option_b": "slower", "option_c": "slowly", "option_d": "slowness", "correct_answer": "C", "explanation": "'Slowly' — adverb.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Subject-Verb Agreement", "question": "A group of students ___ waiting.", "option_a": "are", "option_b": "were", "option_c": "is", "option_d": "have", "correct_answer": "C", "explanation": "'A group' singular → 'is'.", "difficulty": "hard", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Vocabulary", "question": "Opposite of 'generous'?", "option_a": "kind", "option_b": "stingy", "option_c": "caring", "option_d": "humble", "correct_answer": "B", "explanation": "'Stingy'.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Tenses", "question": "She ___ in Singapore since 2015.", "option_a": "lives", "option_b": "lived", "option_c": "has lived", "option_d": "is living", "correct_answer": "C", "explanation": "'Has lived since' — present perfect.", "difficulty": "hard", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Conjunctions", "question": "'Although' used correctly?", "option_a": "Although she studied, she failed.", "option_b": "Although she studied, but she failed.", "option_c": "She failed although but studied.", "option_d": "Although, she studied she failed.", "correct_answer": "A", "explanation": "'Although + clause' without 'but'.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Adjectives", "question": "He is the ___ student in class.", "option_a": "more hardworking", "option_b": "hardworking", "option_c": "most hardworking", "option_d": "very hardworking", "correct_answer": "C", "explanation": "'Most hardworking' — superlative.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Spelling", "question": "Correct spelling?", "option_a": "accomodate", "option_b": "accommodate", "option_c": "acommodate", "option_d": "acomodate", "correct_answer": "B", "explanation": "'accommodate'.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P3", "topic": "Grammar", "question": "Results announced ___ Friday.", "option_a": "in", "option_b": "at", "option_c": "on", "option_d": "by", "correct_answer": "C", "explanation": "'On Friday'.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Whole Numbers", "question": "2345 + 1678 = ?", "option_a": "3913", "option_b": "4013", "option_c": "4023", "option_d": "3923", "correct_answer": "C", "explanation": "4023.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Whole Numbers", "question": "5000 − 2356 = ?", "option_a": "2634", "option_b": "2644", "option_c": "2654", "option_d": "2664", "correct_answer": "B", "explanation": "2644.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Multiplication Tables", "question": "12 × 9 = ?", "option_a": "96", "option_b": "99", "option_c": "108", "option_d": "112", "correct_answer": "C", "explanation": "108.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Multiplication Tables", "question": "96 ÷ 8 = ?", "option_a": "10", "option_b": "11", "option_c": "12", "option_d": "13", "correct_answer": "C", "explanation": "12.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Fractions", "question": "1/3 + 1/3 = ?", "option_a": "2/6", "option_b": "2/3", "option_c": "1/6", "option_d": "3/3", "correct_answer": "B", "explanation": "2/3.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Fractions", "question": "3/4 − 1/4 = ?", "option_a": "2/4", "option_b": "1/4", "option_c": "3/8", "option_d": "2/3", "correct_answer": "A", "explanation": "2/4 = 1/2.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Money", "question": "4 books at $12.50 each = ?", "option_a": "$48", "option_b": "$50", "option_c": "$52", "option_d": "$54", "correct_answer": "B", "explanation": "$50.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Perimeter", "question": "Square side 7 cm. Perimeter?", "option_a": "21 cm", "option_b": "24 cm", "option_c": "28 cm", "option_d": "35 cm", "correct_answer": "C", "explanation": "4×7=28 cm.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Area", "question": "Rectangle 9 cm × 4 cm. Area?", "option_a": "26 cm²", "option_b": "32 cm²", "option_c": "36 cm²", "option_d": "40 cm²", "correct_answer": "C", "explanation": "36 cm².", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Fractions", "question": "7/8 − 3/8 = ?", "option_a": "3/8", "option_b": "4/8", "option_c": "5/8", "option_d": "1/8", "correct_answer": "B", "explanation": "4/8=1/2.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Whole Numbers", "question": "6432 + 2569 = ?", "option_a": "8991", "option_b": "9001", "option_c": "9011", "option_d": "8901", "correct_answer": "B", "explanation": "9001.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Multiplication Tables", "question": "8 × 12 = ?", "option_a": "88", "option_b": "96", "option_c": "104", "option_d": "112", "correct_answer": "B", "explanation": "96.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Multiplication Tables", "question": "144 ÷ 12 = ?", "option_a": "10", "option_b": "11", "option_c": "12", "option_d": "13", "correct_answer": "C", "explanation": "12.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Perimeter", "question": "Rectangle perimeter 36 cm, length 10 cm. Width?", "option_a": "6 cm", "option_b": "7 cm", "option_c": "8 cm", "option_d": "9 cm", "correct_answer": "C", "explanation": "2(10+w)=36, w=8.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Fractions", "question": "2/5 of 25 = ?", "option_a": "8", "option_b": "10", "option_c": "12", "option_d": "15", "correct_answer": "B", "explanation": "10.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Bar Graphs", "question": "Class A=35, B=42, C=28 pupils. Total?", "option_a": "95", "option_b": "100", "option_c": "105", "option_d": "110", "correct_answer": "C", "explanation": "105.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Whole Numbers", "question": "4500 − 1876 = ?", "option_a": "2614", "option_b": "2624", "option_c": "2634", "option_d": "2644", "correct_answer": "B", "explanation": "2624.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Multiplication Tables", "question": "11 × 11 = ?", "option_a": "111", "option_b": "120", "option_c": "121", "option_d": "131", "correct_answer": "C", "explanation": "121.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Time", "question": "2 h 15 min in minutes?", "option_a": "115", "option_b": "120", "option_c": "125", "option_d": "135", "correct_answer": "D", "explanation": "135 min.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Mass", "question": "2.5 kg × 3 bags = ?", "option_a": "6 kg", "option_b": "7 kg", "option_c": "7.5 kg", "option_d": "8 kg", "correct_answer": "C", "explanation": "7.5 kg.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Fractions", "question": "3/4 of 48 = ?", "option_a": "32", "option_b": "34", "option_c": "36", "option_d": "38", "correct_answer": "C", "explanation": "36.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Area", "question": "Square area 49 cm². Side length?", "option_a": "6 cm", "option_b": "7 cm", "option_c": "8 cm", "option_d": "9 cm", "correct_answer": "B", "explanation": "√49=7 cm.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Multiplication Tables", "question": "Missing: 3 × ___ = 108", "option_a": "34", "option_b": "36", "option_c": "38", "option_d": "40", "correct_answer": "B", "explanation": "36.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Whole Numbers", "question": "9032 − 4567 = ?", "option_a": "4455", "option_b": "4465", "option_c": "4475", "option_d": "4485", "correct_answer": "B", "explanation": "4465.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "Mathematics", "level": "P3", "topic": "Length", "question": "8 m rope ÷ 40 cm pieces = ?", "option_a": "18", "option_b": "19", "option_c": "20", "option_d": "22", "correct_answer": "C", "explanation": "800÷40=20.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Diversity of Living Things", "question": "Group including mammals, birds, reptiles, amphibians, fish?", "option_a": "Vertebrates", "option_b": "Invertebrates", "option_c": "Insects", "option_d": "Arthropods", "correct_answer": "A", "explanation": "Vertebrates have a backbone.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Diversity of Living Things", "question": "Process of producing young?", "option_a": "growth", "option_b": "excretion", "option_c": "reproduction", "option_d": "respiration", "correct_answer": "C", "explanation": "Reproduction.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Diversity of Living Things", "question": "Which is an invertebrate?", "option_a": "snake", "option_b": "eagle", "option_c": "crab", "option_d": "frog", "correct_answer": "C", "explanation": "Crabs have no backbone.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Life Cycles", "question": "Correct frog life cycle?", "option_a": "egg→tadpole→froglet→adult", "option_b": "egg→froglet→tadpole→adult", "option_c": "tadpole→egg→froglet→adult", "option_d": "egg→adult→tadpole→froglet", "correct_answer": "A", "explanation": "egg→tadpole→froglet→adult frog.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Plant Reproduction", "question": "Which part contains the ovule?", "option_a": "stamen", "option_b": "petal", "option_c": "sepal", "option_d": "pistil", "correct_answer": "D", "explanation": "Pistil contains the ovule.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Plant Reproduction", "question": "Transfer of pollen from stamen to pistil?", "option_a": "making food", "option_b": "pollination", "option_c": "seed growth", "option_d": "fruit development", "correct_answer": "B", "explanation": "Pollination.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Food Chains", "question": "Correct food chain?", "option_a": "grass→rabbit→fox", "option_b": "fox→rabbit→grass", "option_c": "rabbit→grass→fox", "option_d": "grass→fox→rabbit", "correct_answer": "A", "explanation": "Energy flows: grass→rabbit→fox.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Food Chains", "question": "Organism that makes its own food?", "option_a": "consumer", "option_b": "predator", "option_c": "producer", "option_d": "decomposer", "correct_answer": "C", "explanation": "Producers make food via photosynthesis.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Water Cycle", "question": "Water evaporates from ocean and becomes?", "option_a": "ice", "option_b": "water vapour", "option_c": "heavier", "option_d": "stays liquid", "correct_answer": "B", "explanation": "Evaporation produces water vapour.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Water Cycle", "question": "Water vapour cools and forms clouds?", "option_a": "evaporation", "option_b": "precipitation", "option_c": "condensation", "option_d": "collection", "correct_answer": "C", "explanation": "Condensation.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Magnets", "question": "Poles of a magnet?", "option_a": "north and south", "option_b": "east and west", "option_c": "positive and negative", "option_d": "top and bottom", "correct_answer": "A", "explanation": "North and south poles.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Magnets", "question": "Two north poles brought together?", "option_a": "attract", "option_b": "repel", "option_c": "stick", "option_d": "nothing", "correct_answer": "B", "explanation": "Like poles repel.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Magnets", "question": "Attracted to a magnet?", "option_a": "wood", "option_b": "plastic", "option_c": "iron", "option_d": "glass", "correct_answer": "C", "explanation": "Iron is magnetic.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Magnets", "question": "NOT attracted to a magnet?", "option_a": "iron", "option_b": "steel", "option_c": "copper", "option_d": "nickel", "correct_answer": "C", "explanation": "Copper is non-magnetic.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Water Cycle", "question": "Correct water cycle order?", "option_a": "evaporation→condensation→precipitation→collection", "option_b": "condensation→evaporation→collection→precipitation", "option_c": "precipitation→evaporation→collection→condensation", "option_d": "collection→precipitation→condensation→evaporation", "correct_answer": "A", "explanation": "evaporation→condensation→precipitation→collection.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Food Chains", "question": "Animal eaten by another?", "option_a": "predator", "option_b": "producer", "option_c": "prey", "option_d": "consumer", "correct_answer": "C", "explanation": "Prey.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Food Chains", "question": "Source of energy for almost all food chains?", "option_a": "water", "option_b": "moon", "option_c": "sun", "option_d": "soil", "correct_answer": "C", "explanation": "Sun provides energy.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Plant Reproduction", "question": "Method of seed dispersal?", "option_a": "photosynthesis", "option_b": "pollination", "option_c": "wind", "option_d": "condensation", "correct_answer": "C", "explanation": "Wind disperses seeds.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Diversity of Living Things", "question": "All mammals share?", "option_a": "can fly", "option_b": "lay eggs", "option_c": "cold-blooded", "option_d": "feed young with milk", "correct_answer": "D", "explanation": "Mammals feed young with milk.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Water Cycle", "question": "Rain or snow falling from clouds?", "option_a": "vapour turning", "option_b": "clouds forming", "option_c": "precipitation", "option_d": "collection in lakes", "correct_answer": "C", "explanation": "Precipitation.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Diversity of Living Things", "question": "All living things need?", "option_a": "can fly", "option_b": "all have legs", "option_c": "nutrition", "option_d": "all are green", "correct_answer": "C", "explanation": "All living things need nutrition.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Plant Reproduction", "question": "Male reproductive part of flower?", "option_a": "pistil", "option_b": "petal", "option_c": "stamen", "option_d": "sepal", "correct_answer": "C", "explanation": "Stamen produces pollen.", "difficulty": "easy", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Food Chains", "question": "Grass→rabbit→eagle. Rabbit is?", "option_a": "producer", "option_b": "top predator", "option_c": "prey and predator", "option_d": "decomposer", "correct_answer": "C", "explanation": "Rabbit is eaten and eats.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Water Cycle", "question": "What causes rain?", "option_a": "evaporation", "option_b": "condensation in clouds", "option_c": "water in rivers", "option_d": "sun heating ground", "correct_answer": "B", "explanation": "Droplets become heavy and fall.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "Science", "level": "P3", "topic": "Plant Reproduction", "question": "Seed adapted for wind dispersal?", "option_a": "coconut", "option_b": "mango", "option_c": "dandelion", "option_d": "bean", "correct_answer": "C", "explanation": "Dandelion has feathery parachutes.", "difficulty": "medium", "is_premium": "FALSE"},
+{"subject": "English Language", "level": "P4", "topic": "Tenses", "question": "She ___ her homework by 6 pm yesterday.", "option_a": "finish", "option_b": "finished", "option_c": "had finished", "option_d": "has finished", "correct_answer": "C", "explanation": "Past perfect: completed before another past time.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Tenses", "question": "They ___ for two hours when the rain stopped.", "option_a": "walk", "option_b": "walked", "option_c": "had been walking", "option_d": "are walking", "correct_answer": "C", "explanation": "Past perfect continuous: action in progress before past event.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Tenses", "question": "By next week, she ___ the project.", "option_a": "will finish", "option_b": "will have finished", "option_c": "finishes", "option_d": "has finished", "correct_answer": "B", "explanation": "Future perfect: completed before a future time.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Tenses", "question": "The letter ___ yesterday.", "option_a": "was sent", "option_b": "sent", "option_c": "is sent", "option_d": "has sent", "correct_answer": "A", "explanation": "Passive past simple: the letter was sent.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Active and Passive", "question": "'The chef cooked the meal.' Change to passive.", "option_a": "The meal cooked the chef.", "option_b": "The meal was cooked by the chef.", "option_c": "The meal is cooked by the chef.", "option_d": "The meal has been cooked.", "correct_answer": "B", "explanation": "Passive: subject + was/were + past participle + by + agent.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Active and Passive", "question": "'A dog bit the postman.' Change to passive.", "option_a": "The postman bitten by a dog.", "option_b": "The postman was bit by a dog.", "option_c": "The postman was bitten by a dog.", "option_d": "The postman has been bitten.", "correct_answer": "C", "explanation": "Was bitten by a dog.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Active and Passive", "question": "'The students are painting the mural.' Change to passive.", "option_a": "The mural painted by students.", "option_b": "The mural is being painted by the students.", "option_c": "The mural was being painted.", "option_d": "The mural has been painted.", "correct_answer": "B", "explanation": "Is being painted — present continuous passive.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Active and Passive", "question": "'Someone will announce the results tomorrow.' Change to passive.", "option_a": "The results announce tomorrow.", "option_b": "The results will be announced tomorrow.", "option_c": "The results are announced tomorrow.", "option_d": "The results were announced tomorrow.", "correct_answer": "B", "explanation": "Will be announced — future passive.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Active and Passive", "question": "'They have completed the bridge.' Change to passive.", "option_a": "The bridge has been completed.", "option_b": "The bridge was completed.", "option_c": "The bridge completed.", "option_d": "The bridge is being completed.", "correct_answer": "A", "explanation": "Present perfect passive: has been completed.", "difficulty": "hard", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Direct and Indirect Speech", "question": "'I am tired,' she said. Change to indirect speech.", "option_a": "She said that she was tired.", "option_b": "She said that I was tired.", "option_c": "She said that she is tired.", "option_d": "She says she was tired.", "correct_answer": "A", "explanation": "'I' → 'she', 'am' → 'was'.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Direct and Indirect Speech", "question": "He said, 'I will come tomorrow.' Change to indirect.", "option_a": "He said that he would come the next day.", "option_b": "He said he will come tomorrow.", "option_c": "He said that I would come tomorrow.", "option_d": "He told that he would come.", "correct_answer": "A", "explanation": "Will→would, tomorrow→next day, I→he.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Direct and Indirect Speech", "question": "She asked, 'Are you coming?' Change to indirect.", "option_a": "She asked if I was coming.", "option_b": "She asked if she was coming.", "option_c": "She asked if you are coming.", "option_d": "She asked that I was coming.", "correct_answer": "A", "explanation": "'Are you coming?' → asked if I was coming.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Direct and Indirect Speech", "question": "'Don't touch that!' he shouted. Indirect?", "option_a": "He shouted not to touch that.", "option_b": "He shouted don't touch that.", "option_c": "He shouted that don't touch that.", "option_d": "He told me to not touch that.", "correct_answer": "A", "explanation": "Command in indirect: told/shouted + not to + base verb.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Direct and Indirect Speech", "question": "'Have you finished your work?' the teacher asked. Indirect?", "option_a": "The teacher asked if we had finished our work.", "option_b": "The teacher asked if you have finished your work.", "option_c": "The teacher asked that we finished.", "option_d": "The teacher asked had we finished.", "correct_answer": "A", "explanation": "If + past perfect + pronoun change.", "difficulty": "hard", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Synthesis and Transformation", "question": "Combine: 'She was tired. She kept working.' (using 'although')", "option_a": "Although she was tired, she kept working.", "option_b": "She was tired, although she kept working.", "option_c": "Although she kept working, she was tired.", "option_d": "She was tired although kept working.", "correct_answer": "A", "explanation": "Although + clause, clause.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Synthesis and Transformation", "question": "Combine: 'He studied hard. He passed the exam.' (using 'so')", "option_a": "He studied hard, so he passed the exam.", "option_b": "He passed, so he studied hard.", "option_c": "He studied hard so that he passes.", "option_d": "So he studied hard, he passed.", "correct_answer": "A", "explanation": "Cause + so + result.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Synthesis and Transformation", "question": "Rewrite: 'The match was cancelled because of the heavy rain.' (Begin: Due to...)", "option_a": "Due to the heavy rain, the match was cancelled.", "option_b": "Due to the heavy rain the match cancelled.", "option_c": "Due to the heavy rain, match was cancelled.", "option_d": "Due to the heavy rain, the match will cancel.", "correct_answer": "A", "explanation": "Due to + noun phrase, rest of sentence.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Synthesis and Transformation", "question": "Rewrite: 'It was such a hot day that we stayed indoors.' (Begin: The day was so...)", "option_a": "The day was so hot that we stayed indoors.", "option_b": "The day was so hot we stayed indoors.", "option_c": "The day was such hot that we stayed.", "option_d": "The day was so hot as to stay indoors.", "correct_answer": "A", "explanation": "So + adjective + that.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Synthesis and Transformation", "question": "Rewrite in passive: 'The principal presented the prizes.'", "option_a": "The prizes presented by the principal.", "option_b": "The prizes were presented by the principal.", "option_c": "The prizes are presented by the principal.", "option_d": "The prizes have been presented.", "correct_answer": "B", "explanation": "Were presented by the principal.", "difficulty": "hard", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Synthesis and Transformation", "question": "Combine: 'She is tall. Her sister is short.' (using 'whereas')", "option_a": "She is tall, whereas her sister is short.", "option_b": "Whereas she is tall, her sister is short too.", "option_c": "She is tall whereas but her sister is short.", "option_d": "She is tall, whereas her sister short.", "correct_answer": "A", "explanation": "Whereas shows contrast between two clauses.", "difficulty": "hard", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Vocabulary", "question": "The word 'benevolent' means?", "option_a": "cruel", "option_b": "generous and kind", "option_c": "timid", "option_d": "greedy", "correct_answer": "B", "explanation": "Benevolent = kind and generous.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Vocabulary", "question": "Choose the correct phrasal verb: She ___ her mother, they look so alike.", "option_a": "takes after", "option_b": "takes over", "option_c": "takes up", "option_d": "takes off", "correct_answer": "A", "explanation": "Takes after = resembles.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Vocabulary", "question": "___ her shyness, she gave a brilliant speech.", "option_a": "Because of", "option_b": "In spite of", "option_c": "Due to", "option_d": "As a result of", "correct_answer": "B", "explanation": "In spite of = despite, showing contrast.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Vocabulary", "question": "The hikers were ___ by the stunning mountain view.", "option_a": "bored", "option_b": "puzzled", "option_c": "awestruck", "option_d": "irritated", "correct_answer": "C", "explanation": "Awestruck = overwhelmed with awe.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "English Language", "level": "P4", "topic": "Vocabulary", "question": "Find the word closest in meaning to 'frugal'.", "option_a": "wasteful", "option_b": "thrifty", "option_c": "generous", "option_d": "careless", "correct_answer": "B", "explanation": "Frugal = thrifty, careful with money.", "difficulty": "hard", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Whole Numbers", "question": "What is 56 789 + 23 456?", "option_a": "79 245", "option_b": "80 245", "option_c": "80 145", "option_d": "79 345", "correct_answer": "B", "explanation": "56789+23456=80245.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Whole Numbers", "question": "What is 90 000 − 34 567?", "option_a": "55 333", "option_b": "55 433", "option_c": "55 443", "option_d": "54 433", "correct_answer": "B", "explanation": "90000−34567=55433.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Whole Numbers", "question": "What is the value of 7 in 374 826?", "option_a": "7", "option_b": "70", "option_c": "7000", "option_d": "70 000", "correct_answer": "D", "explanation": "7 is in the ten-thousands place.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Whole Numbers", "question": "Round 48 763 to the nearest thousand.", "option_a": "48 000", "option_b": "49 000", "option_c": "48 700", "option_d": "49 700", "correct_answer": "B", "explanation": "763 ≥ 500 so round up to 49000.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Whole Numbers", "question": "Round 23 450 to the nearest hundred.", "option_a": "23 400", "option_b": "23 500", "option_c": "23 000", "option_d": "24 000", "correct_answer": "B", "explanation": "450 rounds up to 23500.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Factors and Multiples", "question": "List all factors of 12.", "option_a": "1,2,3,4,6,12", "option_b": "1,2,4,6,12", "option_c": "1,2,3,6,12", "option_d": "2,3,4,6", "correct_answer": "A", "explanation": "Factors of 12: 1,2,3,4,6,12.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Factors and Multiples", "question": "Is 7 a factor of 56?", "option_a": "No", "option_b": "Yes", "option_c": "Sometimes", "option_d": "Cannot tell", "correct_answer": "B", "explanation": "56÷7=8, so 7 is a factor.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Factors and Multiples", "question": "What is the first common multiple of 4 and 6?", "option_a": "12", "option_b": "18", "option_c": "24", "option_d": "6", "correct_answer": "A", "explanation": "LCM(4,6)=12.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Factors and Multiples", "question": "Which of these is a prime number?", "option_a": "9", "option_b": "15", "option_c": "17", "option_d": "21", "correct_answer": "C", "explanation": "17 has no factors other than 1 and itself.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Factors and Multiples", "question": "What is the HCF of 18 and 24?", "option_a": "3", "option_b": "6", "option_c": "9", "option_d": "12", "correct_answer": "B", "explanation": "HCF(18,24)=6.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Factors and Multiples", "question": "What is the LCM of 5 and 8?", "option_a": "20", "option_b": "30", "option_c": "40", "option_d": "45", "correct_answer": "C", "explanation": "LCM(5,8)=40.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Factors and Multiples", "question": "Which numbers between 1 and 20 are prime?", "option_a": "2,3,5,7,11,13,17,19", "option_b": "2,3,5,7,9,11,13,17,19", "option_c": "2,3,5,7,11,13,15,17,19", "option_d": "1,2,3,5,7,11,13,17,19", "correct_answer": "A", "explanation": "Primes 1–20: 2,3,5,7,11,13,17,19.", "difficulty": "hard", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Fractions", "question": "What is 3/4 + 1/8?", "option_a": "7/8", "option_b": "6/8", "option_c": "4/8", "option_d": "8/12", "correct_answer": "A", "explanation": "6/8+1/8=7/8.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Fractions", "question": "What is 5/6 − 1/3?", "option_a": "4/3", "option_b": "3/6", "option_c": "1/2", "option_d": "4/6", "correct_answer": "C", "explanation": "5/6−2/6=3/6=1/2.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Fractions", "question": "What is 2 1/3 + 1 2/3?", "option_a": "3 1/3", "option_b": "4", "option_c": "3 2/3", "option_d": "4 1/3", "correct_answer": "B", "explanation": "2+1=3, 1/3+2/3=1, total=4.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Fractions", "question": "What is 3 1/2 − 1 3/4?", "option_a": "2 1/4", "option_b": "1 3/4", "option_c": "1 1/4", "option_d": "2 3/4", "correct_answer": "B", "explanation": "7/2−7/4=14/4−7/4=7/4=1 3/4.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Fractions", "question": "Which fraction is equivalent to 3/4?", "option_a": "6/9", "option_b": "9/12", "option_c": "8/10", "option_d": "6/10", "correct_answer": "B", "explanation": "9/12=3/4.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Fractions", "question": "Arrange in order (smallest first): 1/2, 2/3, 3/8", "option_a": "3/8, 1/2, 2/3", "option_b": "1/2, 2/3, 3/8", "option_c": "2/3, 1/2, 3/8", "option_d": "3/8, 2/3, 1/2", "correct_answer": "A", "explanation": "3/8=0.375, 1/2=0.5, 2/3=0.667.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Fractions", "question": "What is 2/3 × 9?", "option_a": "5", "option_b": "6", "option_c": "7", "option_d": "8", "correct_answer": "B", "explanation": "2/3×9=6.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Fractions", "question": "What is 3/5 of 2/3?", "option_a": "2/5", "option_b": "5/8", "option_c": "6/15", "option_d": "1/2", "correct_answer": "A", "explanation": "3/5×2/3=6/15=2/5.", "difficulty": "hard", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Decimals", "question": "What is 3.5 + 2.8?", "option_a": "5.3", "option_b": "6.0", "option_c": "6.3", "option_d": "6.5", "correct_answer": "C", "explanation": "3.5+2.8=6.3.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Decimals", "question": "What is 7.2 − 4.6?", "option_a": "2.4", "option_b": "2.5", "option_c": "2.6", "option_d": "3.4", "correct_answer": "C", "explanation": "7.2−4.6=2.6.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Decimals", "question": "Write 0.75 as a fraction in simplest form.", "option_a": "3/5", "option_b": "7/10", "option_c": "3/4", "option_d": "75/10", "correct_answer": "C", "explanation": "0.75=75/100=3/4.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Decimals", "question": "What is 4.3 × 10?", "option_a": "4.30", "option_b": "43", "option_c": "430", "option_d": "0.43", "correct_answer": "B", "explanation": "Moving decimal right: 43.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Mathematics", "level": "P4", "topic": "Decimals", "question": "What is 3.6 × 5?", "option_a": "15", "option_b": "16", "option_c": "17", "option_d": "18", "correct_answer": "D", "explanation": "3.6×5=18.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Digestion", "question": "What is the first organ food enters after the mouth?", "option_a": "stomach", "option_b": "small intestine", "option_c": "oesophagus", "option_d": "large intestine", "correct_answer": "C", "explanation": "Food travels from the mouth down the oesophagus.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Digestion", "question": "Where does most digestion and absorption of nutrients occur?", "option_a": "stomach", "option_b": "small intestine", "option_c": "large intestine", "option_d": "liver", "correct_answer": "B", "explanation": "Most digestion and absorption happens in the small intestine.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Digestion", "question": "What is the role of saliva in digestion?", "option_a": "to absorb nutrients", "option_b": "to break down food chemically and lubricate it", "option_c": "to produce acid", "option_d": "to store food", "correct_answer": "B", "explanation": "Saliva contains enzymes that begin breaking down food.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Digestion", "question": "What is the role of the stomach?", "option_a": "absorb water", "option_b": "produce bile", "option_c": "churn food and mix it with acid", "option_d": "filter blood", "correct_answer": "C", "explanation": "Stomach churns food and mixes it with acid.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Digestion", "question": "What does the large intestine primarily do?", "option_a": "digest proteins", "option_b": "produce enzymes", "option_c": "absorb water and form faeces", "option_d": "absorb nutrients", "correct_answer": "C", "explanation": "Large intestine absorbs water.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Digestion", "question": "Which organ produces bile?", "option_a": "stomach", "option_b": "pancreas", "option_c": "liver", "option_d": "small intestine", "correct_answer": "C", "explanation": "The liver produces bile.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Digestion", "question": "Why is it important to chew food thoroughly?", "option_a": "to make it taste better", "option_b": "to increase surface area for enzyme action", "option_c": "to make it colourful", "option_d": "to produce more saliva", "correct_answer": "B", "explanation": "Smaller pieces = more surface area for enzymes to work.", "difficulty": "hard", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Digestion", "question": "Where does bile go after it is produced?", "option_a": "directly into the blood", "option_b": "into the small intestine to break down fats", "option_c": "into the stomach to digest proteins", "option_d": "into the large intestine", "correct_answer": "B", "explanation": "Bile is released into the small intestine to emulsify fats.", "difficulty": "hard", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Respiratory System", "question": "What is the main function of the respiratory system?", "option_a": "pump blood", "option_b": "digest food", "option_c": "exchange oxygen and carbon dioxide", "option_d": "filter waste", "correct_answer": "C", "explanation": "The respiratory system exchanges O₂ and CO₂.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Respiratory System", "question": "Which organ is responsible for breathing?", "option_a": "heart", "option_b": "kidneys", "option_c": "lungs", "option_d": "liver", "correct_answer": "C", "explanation": "Lungs carry out gas exchange.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Respiratory System", "question": "What gas do we breathe in?", "option_a": "carbon dioxide", "option_b": "nitrogen only", "option_c": "oxygen", "option_d": "hydrogen", "correct_answer": "C", "explanation": "We breathe in oxygen.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Respiratory System", "question": "What gas do we breathe out in higher amounts?", "option_a": "oxygen", "option_b": "nitrogen", "option_c": "carbon dioxide", "option_d": "helium", "correct_answer": "C", "explanation": "We breathe out more CO₂ than we breathe in.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Respiratory System", "question": "What is the role of the diaphragm?", "option_a": "produce enzymes", "option_b": "pump blood", "option_c": "help the lungs expand and contract", "option_d": "filter toxins", "correct_answer": "C", "explanation": "The diaphragm is a muscle that controls breathing.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Respiratory System", "question": "What are the tiny air sacs in the lungs called?", "option_a": "bronchi", "option_b": "alveoli", "option_c": "capillaries", "option_d": "trachea", "correct_answer": "B", "explanation": "Alveoli are tiny air sacs where gas exchange occurs.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Respiratory System", "question": "Why do the alveoli have a very large surface area?", "option_a": "to store more air", "option_b": "to allow more efficient gas exchange", "option_c": "to produce more mucus", "option_d": "to keep the lungs clean", "correct_answer": "B", "explanation": "Large surface area = faster gas exchange.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Respiratory System", "question": "Smoking damages cilia in the respiratory tract. This means?", "option_a": "more oxygen is absorbed", "option_b": "mucus and particles cannot be cleared", "option_c": "the lungs produce more alveoli", "option_d": "breathing becomes easier", "correct_answer": "B", "explanation": "Cilia normally sweep mucus and particles out; damage means they accumulate.", "difficulty": "hard", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Circulatory System", "question": "What is the main function of the circulatory system?", "option_a": "digest food", "option_b": "transport blood, oxygen and nutrients around the body", "option_c": "filter waste from blood", "option_d": "produce hormones", "correct_answer": "B", "explanation": "Circulatory system transports blood, oxygen and nutrients.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Circulatory System", "question": "What does the heart do?", "option_a": "produce blood", "option_b": "store oxygen", "option_c": "pump blood around the body", "option_d": "filter blood", "correct_answer": "C", "explanation": "The heart pumps blood.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Circulatory System", "question": "What are blood vessels that carry blood AWAY from the heart called?", "option_a": "veins", "option_b": "capillaries", "option_c": "arteries", "option_d": "valves", "correct_answer": "C", "explanation": "Arteries carry blood away from the heart.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Circulatory System", "question": "What are blood vessels that carry blood BACK to the heart called?", "option_a": "arteries", "option_b": "capillaries", "option_c": "valves", "option_d": "veins", "correct_answer": "D", "explanation": "Veins carry blood back to the heart.", "difficulty": "easy", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Circulatory System", "question": "What is the role of red blood cells?", "option_a": "fight infection", "option_b": "carry oxygen", "option_c": "clot blood", "option_d": "produce hormones", "correct_answer": "B", "explanation": "Red blood cells carry oxygen via haemoglobin.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Circulatory System", "question": "What do white blood cells do?", "option_a": "carry oxygen", "option_b": "clot blood", "option_c": "fight infection and disease", "option_d": "carry nutrients", "correct_answer": "C", "explanation": "White blood cells defend the body against infection.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Circulatory System", "question": "Why is exercise good for the heart?", "option_a": "it makes the heart smaller", "option_b": "it strengthens the heart muscle", "option_c": "it reduces blood flow", "option_d": "it produces more red cells", "correct_answer": "B", "explanation": "Exercise strengthens the heart muscle, improving efficiency.", "difficulty": "medium", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Circulatory System", "question": "Why do arteries have thick, muscular walls?", "option_a": "to absorb nutrients", "option_b": "to withstand high pressure of blood pumped from heart", "option_c": "to carry blood slowly", "option_d": "to produce blood cells", "correct_answer": "B", "explanation": "Arteries need thick walls to handle high blood pressure.", "difficulty": "hard", "is_premium": "TRUE"},
+{"subject": "Science", "level": "P4", "topic": "Circulatory System", "question": "What happens when blood vessels become blocked with fatty deposits?", "option_a": "blood flows faster", "option_b": "blood pressure drops", "option_c": "blood cannot flow freely — risk of heart attack", "option_d": "oxygen is absorbed faster", "correct_answer": "C", "explanation": "Blocked vessels reduce blood flow, risking heart attack.", "difficulty": "hard", "is_premium": "TRUE"}
+];
+
+// ═══════════════════════════════════════════════════
+//  BOOT
+// ═══════════════════════════════════════════════════
+(async function boot() {
+  renderLoginChips();
+  await loadData();
+  const saved = getSession();
+  const users = getUsers();
+  if (saved && users[saved]) {
+    enterApp(saved);
+  } else {
+    document.getElementById('s-login').style.display = 'block';
+    document.getElementById('app-shell').style.display = 'none';
+  }
+  document.getElementById('login-name').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+})();
+</script>
+</body>
+</html>
